@@ -1,14 +1,14 @@
 version: '3'
 services:
   php:
-    container_name: php
+    container_name: ecorp-php
     build: ./docker/php
     volumes:
       - .:/var/www/html
     working_dir: /var/www/html
 
   nginx:
-    container_name: nginx
+    container_name: ecorp-nginx
     image: nginx:stable
     ports:
       - 85:80
@@ -20,8 +20,8 @@ services:
 
   postgres:
     image: postgres
-    container_name: postgres
+    container_name: ecorp-postgres
     environment:
-      POSTGRES_USER: admin
+      POSTGRES_USER: mrrobot
       POSTGRES_PASSWORD: root
       POSTGRES_DB: ecorp-company

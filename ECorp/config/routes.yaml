@@ -1,3 +1,8 @@
 api_show_all_users:
     path: /api/users
     controller: ECorp\UI\Api\UserController::getAllUsers
+
+register_user:
+    path: /api/user
+    controller: ECorp\UI\Api\UserController::registerUser
+    methods: ['POST']

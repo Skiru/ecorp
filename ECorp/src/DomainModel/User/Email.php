@@ -42,4 +42,12 @@ final class Email
 
         $this->email = $email;
     }
+
+    /**
+     * @return string
+     */
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
 }

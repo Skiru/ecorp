@@ -4,7 +4,6 @@ namespace ECorp\Infrastructure\CommandBus;
 
 final class CommandBus implements CommandBusInterface
 {
-    //@TODO: Add Assertions!
     /**
      * @var array
      */

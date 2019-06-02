@@ -5,6 +5,7 @@ namespace ECorp\UI\Api;
 use ECorp\Application\User\Command\UserRegisterCommand;
 use ECorp\DomainModel\User\Age;
 use ECorp\DomainModel\User\Email;
+use ECorp\DomainModel\User\User;
 use ECorp\DomainModel\User\Username;
 use ECorp\Infrastructure\CommandBus\CommandBusInterface;
 use InvalidArgumentException;
@@ -39,16 +40,14 @@ class UserController extends AbstractController
 
         try {
             $uuid = Uuid::uuid4();
-            $email = new Email($json['email']);
-            $username = new Username($json['username']);
-            $age = new Age($json['age']);
-
-            $userRegisterCommand = new UserRegisterCommand(
-                $email,
-                $username,
-                $age,
+            $user = new User(
+                new Email($json['email']),
+                new Username($json['username']),
+                new Age($json['age']),
                 $uuid
             );
+
+            $userRegisterCommand = new UserRegisterCommand($user);
 
             $this->commandBus->handle($userRegisterCommand);
 

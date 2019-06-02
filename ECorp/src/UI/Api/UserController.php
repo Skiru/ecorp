@@ -54,7 +54,7 @@ class UserController extends AbstractController
 
             return new JsonResponse(['uuid' => $uuid], 201);
         } catch (InvalidArgumentException $argumentException) {
-            return new JsonResponse(['payload' => $argumentException->getMessage()], 401);
+            return new JsonResponse(['payload' => $argumentException->getMessage()], 400);
         }
     }
 

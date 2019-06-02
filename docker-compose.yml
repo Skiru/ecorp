@@ -2,6 +2,8 @@ version: '3'
 services:
   php:
     container_name: ecorp-php
+    links:
+      - postgres
     build: ./docker/php
     volumes:
       - .:/var/www/html
@@ -21,6 +23,10 @@ services:
   postgres:
     image: postgres
     container_name: ecorp-postgres
+    volumes:
+      - ./docker/pgdata:/var/lib/postgresql
+    ports:
+      - 5432:5432
     environment:
       POSTGRES_USER: mrrobot
       POSTGRES_PASSWORD: root

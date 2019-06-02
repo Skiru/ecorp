@@ -9,7 +9,6 @@ final class UserRegisterCommandHandler
      */
     public function handle(UserRegisterCommand $command)
     {
-        echo var_dump($command);
-        exit;
+        //TUTAJ SIE ZAPISUJE LADNIE
     }
 }

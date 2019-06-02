@@ -7,10 +7,9 @@ use ECorp\DomainModel\User\Age;
 use ECorp\DomainModel\User\Email;
 use ECorp\DomainModel\User\Username;
 use ECorp\Infrastructure\CommandBus\CommandBusInterface;
-use Exception;
+use InvalidArgumentException;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -33,16 +32,21 @@ class UserController extends AbstractController
     /**
      * @param Request $request
      * @return JsonResponse
-     * @throws Exception
      */
     public function registerUser(Request $request): JsonResponse
     {
-        $uuid = Uuid::uuid4();
+        $json = json_decode($request->getContent(), true);
+
         try {
+            $uuid = Uuid::uuid4();
+            $email = new Email($json['email']);
+            $username = new Username($json['username']);
+            $age = new Age($json['age']);
+
             $userRegisterCommand = new UserRegisterCommand(
-                new Email($request->get('email')),
-                new Username($request->get('username')),
-                new Age($request->get('age')),
+                $email,
+                $username,
+                $age,
                 $uuid
             );
 
@@ -50,14 +54,14 @@ class UserController extends AbstractController
 
             return new JsonResponse(['uuid' => $uuid], 201);
         } catch (InvalidArgumentException $argumentException) {
-            return new JsonResponse($argumentException->getMessage(), 401);
+            return new JsonResponse(['payload' => $argumentException->getMessage()], 401);
         }
     }
 
     /**
      * @return JsonResponse
      */
-    public function getAllUsers(): JsonResponse
+    public function listUsers(): JsonResponse
     {
         return new JsonResponse([
             'users' => [

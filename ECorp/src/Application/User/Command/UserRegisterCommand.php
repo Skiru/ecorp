@@ -6,7 +6,6 @@ use ECorp\DomainModel\User\Age;
 use ECorp\DomainModel\User\Email;
 use ECorp\DomainModel\User\Username;
 use InvalidArgumentException;
-use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Webmozart\Assert\Assert;
 
@@ -44,7 +43,7 @@ final class UserRegisterCommand
     {
         Assert::uuid($uuid, 'Generated Uuid is not correct');
 
-        $this->uuid = $uuid;
+        $this->uuid = $uuid->toString();
         $this->email = $email;
         $this->username = $username;
         $this->age = $age;

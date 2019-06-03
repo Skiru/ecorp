@@ -2,9 +2,9 @@
 
 namespace ECorp\DomainModel\User;
 //CZY W DOMENIE MOGE UZYWAC UUIDINTERFACE???
-use InvalidArgumentException;
+use ECorp\DomainModel\Assert\DomainUserModelException;
+use ECorp\Infrastructure\Assert\EcorpAssert;
 use Ramsey\Uuid\UuidInterface;
-use Webmozart\Assert\Assert;
 
 class User
 {
@@ -34,11 +34,11 @@ class User
      * @param Username $username
      * @param Age $age
      * @param UuidInterface $uuid
-     * @throws InvalidArgumentException
+     * @throws DomainUserModelException
      */
     public function __construct(Email $email, Username $username, Age $age, UuidInterface $uuid)
     {
-        Assert::uuid($uuid, 'Generated Uuid is not correct');
+        EcorpAssert::uuid($uuid, 'Generated Uuid is not correct');
 
         $this->uuid = $uuid->toString();
         $this->email = $email;

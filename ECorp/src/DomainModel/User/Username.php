@@ -2,9 +2,9 @@
 
 namespace ECorp\DomainModel\User;
 
+use ECorp\DomainModel\Assert\DomainUserModelException;
 use ECorp\DomainModel\BusinessRequirementsConstants;
-use InvalidArgumentException;
-use Webmozart\Assert\Assert;
+use ECorp\Infrastructure\Assert\EcorpAssert;
 
 final class Username
 {
@@ -17,15 +17,20 @@ final class Username
     /**
      * Username constructor.
      * @param string $username
-     * @throws InvalidArgumentException
+     * @throws DomainUserModelException
      */
     public function __construct(string $username)
     {
-        Assert::stringNotEmpty($username, 'Username cannot be empty!');
-        Assert::lengthBetween(
+        EcorpAssert::stringNotEmpty($username, 'Username cannot be empty!');
+        EcorpAssert::lengthBetween(
             $username,
             BusinessRequirementsConstants::MIN_USERNAME_LENGTH,
-            BusinessRequirementsConstants::MAX_USERNAME_LENGTH
+            BusinessRequirementsConstants::MAX_USERNAME_LENGTH,
+            sprintf(
+                'Username length must be between %s - %s',
+                BusinessRequirementsConstants::MIN_USERNAME_LENGTH,
+                BusinessRequirementsConstants::MAX_USERNAME_LENGTH
+            )
         );
 
         $this->username = $username;

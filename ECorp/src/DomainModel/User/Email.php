@@ -2,9 +2,10 @@
 
 namespace ECorp\DomainModel\User;
 
+use ECorp\DomainModel\Assert\DomainUserModelException;
 use ECorp\DomainModel\BusinessRequirementsConstants;
+use ECorp\Infrastructure\Assert\EcorpAssert;
 use InvalidArgumentException;
-use Webmozart\Assert\Assert;
 
 final class Email
 {
@@ -16,11 +17,11 @@ final class Email
     /**
      * Email constructor.
      * @param string $email
-     * @throws InvalidArgumentException
+     * @throws DomainUserModelException
      */
     public function __construct(string $email)
     {
-        Assert::stringNotEmpty($email, 'Email cannot be empty');
+        EcorpAssert::stringNotEmpty($email, 'Email cannot be empty');
 
         if (false === filter_var($email, FILTER_VALIDATE_EMAIL)) {
             throw new InvalidArgumentException('Invalid email address.');

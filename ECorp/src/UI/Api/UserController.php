@@ -4,11 +4,12 @@ namespace ECorp\UI\Api;
 
 use ECorp\Application\Query\User\UserQueryInterface;
 use ECorp\Application\User\Command\UserRegisterCommand;
-use ECorp\DomainModel\Assert\DomainUserModelException;
+use ECorp\DomainModel\Assert\AssertException;
 use ECorp\DomainModel\User\Age;
 use ECorp\DomainModel\User\Email;
 use ECorp\DomainModel\User\User;
 use ECorp\DomainModel\User\Username;
+use ECorp\DomainModel\User\Uuid as DomainUuid;
 use ECorp\Infrastructure\CommandBus\CommandBusInterface;
 use InvalidArgumentException;
 use Ramsey\Uuid\Uuid;
@@ -42,19 +43,19 @@ class UserController extends AbstractController
     /**
      * @param Request $request
      * @return JsonResponse
-     * @throws DomainUserModelException
+     * @throws AssertException
      */
     public function registerUser(Request $request): JsonResponse
     {
         $json = json_decode($request->getContent(), true);
+        $uuid = Uuid::uuid4()->toString();
 
         try {
-            $uuid = Uuid::uuid4();
             $user = new User(
                 new Email($json['email']),
                 new Username($json['username']),
                 new Age($json['age']),
-                $uuid
+                new DomainUuid($uuid)
             );
 
             $userRegisterCommand = new UserRegisterCommand($user);

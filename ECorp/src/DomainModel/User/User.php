@@ -2,14 +2,12 @@
 
 namespace ECorp\DomainModel\User;
 
-use ECorp\DomainModel\Assert\DomainUserModelException;
-use ECorp\Infrastructure\Assert\EcorpAssert;
-use Ramsey\Uuid\UuidInterface;
+use ECorp\DomainModel\Assert\ECorpAssertAbstract;
 
-final class User
+final class User extends ECorpAssertAbstract
 {
     /**
-     * @var UuidInterface
+     * @var Uuid
      */
     private $uuid;
 
@@ -33,23 +31,20 @@ final class User
      * @param Email $email
      * @param Username $username
      * @param Age $age
-     * @param UuidInterface $uuid
-     * @throws DomainUserModelException
+     * @param Uuid $uuid
      */
-    public function __construct(Email $email, Username $username, Age $age, UuidInterface $uuid)
+    public function __construct(Email $email, Username $username, Age $age, Uuid $uuid)
     {
-        EcorpAssert::uuid($uuid, 'Generated Uuid is not correct');
-
-        $this->uuid = $uuid->toString();
+        $this->uuid = $uuid;
         $this->email = $email;
         $this->username = $username;
         $this->age = $age;
     }
 
     /**
-     * @return string
+     * @return Uuid
      */
-    public function getUuid(): string
+    public function getUuid(): Uuid
     {
         return $this->uuid;
     }

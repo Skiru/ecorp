@@ -4,7 +4,7 @@ namespace ECorp\DomainModel\Assert;
 
 use Exception;
 
-class DomainUserModelException extends Exception
+class AssertException extends Exception
 {
 
 }

@@ -1,0 +1,19 @@
+services:
+    ECorp\Infrastructure\Assert\EcorpAssert: ~
+
+    ECorp\DomainModel\Assert\ECorpAssertAbstract:
+        abstract:  true
+        calls:
+            - [setAssert, ['@ECorp\Infrastructure\Assert\EcorpAssert']]
+
+    ECorp\DomainModel\User\Email:
+        parent: ECorp\DomainModel\Assert\ECorpAssertAbstract
+
+    ECorp\DomainModel\User\Username:
+        parent: ECorp\DomainModel\Assert\ECorpAssertAbstract
+
+    ECorp\DomainModel\User\Uuid:
+        parent: ECorp\DomainModel\Assert\ECorpAssertAbstract
+
+    ECorp\DomainModel\User\Age:
+        parent: ECorp\DomainModel\Assert\ECorpAssertAbstract

@@ -2,65 +2,65 @@
 
 namespace ECorp\Infrastructure\Assert;
 
-use ECorp\DomainModel\Assert\DomainAssertInterface;
-use ECorp\DomainModel\Assert\DomainUserModelException;
+use ECorp\DomainModel\Assert\AssertInterface;
+use ECorp\DomainModel\Assert\AssertException;
 use InvalidArgumentException;
 use Webmozart\Assert\Assert;
 
-class EcorpAssert implements DomainAssertInterface
+class EcorpAssert implements AssertInterface
 {
     /**
      * {@inheritDoc}
      */
-    public static function greaterThanEq(int $value, int $limit, string $message): void
+    public function greaterThanEq(int $value, int $limit, string $message): void
     {
         try {
             Assert::greaterThanEq($value, $limit, $message);
         } catch (InvalidArgumentException $argumentException) {
-            throw new DomainUserModelException($argumentException->getMessage());
+            throw new AssertException($argumentException->getMessage());
         }
     }
 
     /**
      * {@inheritDoc}
      */
-    public static function lessThan(int $value, int $limit, string $message): void
+    public function lessThan(int $value, int $limit, string $message): void
     {
         try {
             Assert::lessThan($value, $limit, $message);
         } catch (InvalidArgumentException $argumentException) {
-            throw new DomainUserModelException($argumentException->getMessage());
+            throw new AssertException($argumentException->getMessage());
         }
     }
 
     /**
      * {@inheritDoc}
      */
-    public static function stringNotEmpty(string $value, string $message): void
+    public function stringNotEmpty(string $value, string $message): void
     {
         try {
             Assert::stringNotEmpty($value, $message);
         } catch (InvalidArgumentException $argumentException) {
-            throw new DomainUserModelException($argumentException->getMessage());
+            throw new AssertException($argumentException->getMessage());
         }
     }
 
     /**
      * {@inheritDoc}
      */
-    public static function uuid(string $uuid, string $message): void
+    public function uuid(string $uuid, string $message): void
     {
         try {
             Assert::uuid($uuid, $message);
         } catch (InvalidArgumentException $argumentException) {
-            throw new DomainUserModelException($argumentException->getMessage());
+            throw new AssertException($argumentException->getMessage());
         }
     }
 
     /**
      * {@inheritDoc}
      */
-    public static function lengthBetween(string $value, int $lengthMin, int $lengthMax, string $message): void
+    public function lengthBetween(string $value, int $lengthMin, int $lengthMax, string $message): void
     {
         Assert::lengthBetween(
             $value,

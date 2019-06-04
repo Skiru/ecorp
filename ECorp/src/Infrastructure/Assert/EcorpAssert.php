@@ -4,7 +4,6 @@ namespace ECorp\Infrastructure\Assert;
 
 use ECorp\DomainModel\Assert\DomainAssertInterface;
 use ECorp\DomainModel\Assert\DomainUserModelException;
-use ECorp\DomainModel\BusinessRequirementsConstants;
 use InvalidArgumentException;
 use Webmozart\Assert\Assert;
 
@@ -63,7 +62,7 @@ class EcorpAssert implements DomainAssertInterface
      */
     public static function lengthBetween(string $value, int $lengthMin, int $lengthMax, string $message): void
     {
-        EcorpAssert::lengthBetween(
+        Assert::lengthBetween(
             $value,
             $lengthMin,
             $lengthMax,

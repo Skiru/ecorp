@@ -2,7 +2,9 @@
 
 namespace ECorp\UI\Api;
 
+use ECorp\Application\Query\User\UserQueryInterface;
 use ECorp\Application\User\Command\UserRegisterCommand;
+use ECorp\DomainModel\Assert\DomainUserModelException;
 use ECorp\DomainModel\User\Age;
 use ECorp\DomainModel\User\Email;
 use ECorp\DomainModel\User\User;
@@ -22,17 +24,25 @@ class UserController extends AbstractController
     private $commandBus;
 
     /**
+     * @var UserQueryInterface
+     */
+    private $userQuery;
+
+    /**
      * UserController constructor.
      * @param CommandBusInterface $commandBus
+     * @param UserQueryInterface $userQuery
      */
-    public function __construct(CommandBusInterface $commandBus)
+    public function __construct(CommandBusInterface $commandBus, UserQueryInterface $userQuery)
     {
         $this->commandBus = $commandBus;
+        $this->userQuery = $userQuery;
     }
 
     /**
      * @param Request $request
      * @return JsonResponse
+     * @throws DomainUserModelException
      */
     public function registerUser(Request $request): JsonResponse
     {
@@ -60,13 +70,29 @@ class UserController extends AbstractController
     /**
      * @return JsonResponse
      */
-    public function listUsers(): JsonResponse
+    public function countUsers(): JsonResponse
     {
-        return new JsonResponse([
-            'users' => [
-                'mateusz' => 'serialized_mateusz_user_data'
-            ]
-        ]);
+        return new JsonResponse(['users' => $this->userQuery->count()]);
     }
 
+    /**
+     * @return JsonResponse
+     */
+    public function listUsers(): JsonResponse
+    {
+        return new JsonResponse($this->userQuery->getAll());
+    }
+
+    /**
+     * @param string $uuid
+     * @return JsonResponse
+     */
+    public function getUserByUuid(string $uuid): JsonResponse
+    {
+        if (null === $this->userQuery->getByUuid($uuid)) {
+            return new JsonResponse(['payload' => 'no users found'], 404);
+        }
+
+        return new JsonResponse($this->userQuery->getByUuid($uuid));
+    }
 }

@@ -1,12 +1,12 @@
 <?php
 
 namespace ECorp\DomainModel\User;
-//CZY W DOMENIE MOGE UZYWAC UUIDINTERFACE???
+
 use ECorp\DomainModel\Assert\DomainUserModelException;
 use ECorp\Infrastructure\Assert\EcorpAssert;
 use Ramsey\Uuid\UuidInterface;
 
-class User
+final class User
 {
     /**
      * @var UuidInterface

@@ -1,0 +1,4 @@
+register_user:
+  path: /api/users
+  controller: ECorp\UI\Api\UserController::registerUser
+  methods: ['POST']

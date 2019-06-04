@@ -33,7 +33,7 @@ class User
 
     /**
      * @var string
-     * @ORM\Column(name="email", type="string", nullable=false)
+     * @ORM\Column(name="email", type="string", nullable=false, unique=true)
      */
     private $email;
 

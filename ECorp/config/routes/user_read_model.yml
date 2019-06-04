@@ -1,0 +1,14 @@
+users_count:
+  path: /api/users/count
+  controller: ECorp\UI\Api\UserController:countUsers
+  methods: ['GET']
+
+api_list_all_users:
+  path: /api/users
+  controller: ECorp\UI\Api\UserController::listUsers
+  methods: ['GET']
+
+get_user_by_uuid:
+  path: /api/users/{uuid}
+  controller: ECorp\UI\Api\UserController:getUserByUuid
+  methods: ['GET']

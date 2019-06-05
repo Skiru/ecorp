@@ -3,6 +3,8 @@
 namespace ECorp\UI\Api;
 
 use ECorp\Application\Query\User\UserQueryInterface;
+use ECorp\Application\User\Command\UserDeleteCommand;
+use ECorp\Application\User\Command\UserDeleteException;
 use ECorp\Application\User\Command\UserRegisterCommand;
 use ECorp\Application\User\Command\UserRegisterException;
 use ECorp\DomainModel\Assert\AssertException;
@@ -67,6 +69,28 @@ class UserController extends AbstractController
             return new JsonResponse(['payload' => $argumentException->getMessage()], 400);
         } catch (UserRegisterException $userRegisterException) {
             return new JsonResponse(['payload' => $userRegisterException->getMessage()], $userRegisterException->getCode());
+        }
+    }
+
+    /**
+     * @param string $uuid
+     * @return JsonResponse
+     * @throws AssertException
+     */
+    public function deleteUser(string $uuid): JsonResponse
+    {
+        try {
+            $userDeleteCommand = new UserDeleteCommand(
+                new DomainUuid($uuid)
+            );
+
+            $this->commandBus->handle($userDeleteCommand);
+
+            return new JsonResponse(['payload' => sprintf('User with uuid: %s has been deleted successfully', $uuid)]);
+        } catch (AssertException $assertException) {
+            return new JsonResponse(['payload' => $assertException->getMessage()], 409);
+        } catch (UserDeleteException $deleteException) {
+            return new JsonResponse(['payload' => $deleteException->getMessage()], $deleteException->getCode());
         }
     }
 

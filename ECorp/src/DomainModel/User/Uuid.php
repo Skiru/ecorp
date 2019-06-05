@@ -10,7 +10,7 @@ final class Uuid
     /**
      * @var string
      */
-    private $uuid;
+    private $string;
 
     /**
      * Uuid constructor.
@@ -22,14 +22,14 @@ final class Uuid
         ECorpAssert::stringNotEmpty($uuid, 'Uuid value cannot be empty!');
         ECorpAssert::uuid($uuid, 'Uuid is wrong!');
 
-        $this->uuid = $uuid;
+        $this->string = $uuid;
     }
 
     /**
      * @return string
      */
-    public function getUuid(): string
+    public function getString(): string
     {
-        return $this->uuid;
+        return $this->string;
     }
 }

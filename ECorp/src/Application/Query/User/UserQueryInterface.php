@@ -19,4 +19,10 @@ interface UserQueryInterface
      * @return array
      */
     public function getAll(): array;
+
+    /**
+     * @param string $email
+     * @return UserView|null
+     */
+    public function getByEmail(string $email): ?UserView;
 }

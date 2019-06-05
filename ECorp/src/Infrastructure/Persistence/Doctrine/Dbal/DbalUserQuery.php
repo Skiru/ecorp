@@ -84,4 +84,27 @@ class DbalUserQuery implements UserQueryInterface
             return new UserView($user['email'], $user['username'], $user['age']);
         }, $users);
     }
+
+    /**
+     * @param string $email
+     * @return UserView|null
+     * @throws DBALException
+     */
+    public function getByEmail(string $email): ?UserView
+    {
+        $qb = $this->connection->createQueryBuilder();
+        $qb
+            ->select('u.uuid')
+            ->from('users', 'u')
+            ->where('u.email = :email')
+            ->setParameter('email', $email);
+
+        $user = $this->connection->fetchAssoc($qb->getSQL(), $qb->getParameters());
+
+        if (!$user) {
+            return null;
+        }
+
+        return new UserView($user['email'], $user['username'], $user['age']);
+    }
 }

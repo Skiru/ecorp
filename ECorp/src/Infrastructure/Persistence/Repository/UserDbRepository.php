@@ -3,6 +3,8 @@
 namespace ECorp\Infrastructure\Persistence\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use ECorp\DomainModel\User\User;
 use ECorp\DomainModel\User\UserRepositoryInterface;
 use ECorp\Infrastructure\Facade\UserFacade;
@@ -22,8 +24,8 @@ class UserDbRepository extends ServiceEntityRepository implements UserRepository
 
     /**
      * @param User $user
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function register(User $user): void
     {

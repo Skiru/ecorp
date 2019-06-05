@@ -2,7 +2,6 @@
 
 namespace ECorp\Application\User\Command;
 
-
 use ECorp\DomainModel\User\User;
 
 final class UserRegisterCommand

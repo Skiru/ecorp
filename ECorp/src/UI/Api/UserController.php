@@ -4,6 +4,7 @@ namespace ECorp\UI\Api;
 
 use ECorp\Application\Query\User\UserQueryInterface;
 use ECorp\Application\User\Command\UserRegisterCommand;
+use ECorp\Application\User\Command\UserRegisterException;
 use ECorp\DomainModel\Assert\AssertException;
 use ECorp\DomainModel\User\Age;
 use ECorp\DomainModel\User\Email;
@@ -64,6 +65,8 @@ class UserController extends AbstractController
             return new JsonResponse(['uuid' => $uuid], 201);
         } catch (AssertException $argumentException) {
             return new JsonResponse(['payload' => $argumentException->getMessage()], 400);
+        } catch (UserRegisterException $userRegisterException) {
+            return new JsonResponse(['payload' => $userRegisterException->getMessage()], $userRegisterException->getCode());
         }
     }
 

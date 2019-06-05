@@ -3,10 +3,10 @@
 namespace ECorp\DomainModel\User;
 
 use ECorp\DomainModel\Assert\AssertException;
-use ECorp\DomainModel\Assert\ECorpAssertAbstract;
+use ECorp\DomainModel\Assert\ECorpAssert;
 use ECorp\DomainModel\BusinessRequirementsConstants;
 
-final class Username extends ECorpAssertAbstract
+final class Username
 {
     /**
      * @var string
@@ -20,8 +20,8 @@ final class Username extends ECorpAssertAbstract
      */
     public function __construct(string $username)
     {
-        $this->assert->stringNotEmpty($username, 'Username cannot be empty!');
-        $this->assert->lengthBetween(
+        EcorpAssert::stringNotEmpty($username, 'Username cannot be empty!');
+        EcorpAssert::lengthBetween(
             $username,
             BusinessRequirementsConstants::MIN_USERNAME_LENGTH,
             BusinessRequirementsConstants::MAX_USERNAME_LENGTH,

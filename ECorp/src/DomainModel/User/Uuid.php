@@ -3,9 +3,9 @@
 namespace ECorp\DomainModel\User;
 
 use ECorp\DomainModel\Assert\AssertException;
-use ECorp\DomainModel\Assert\ECorpAssertAbstract;
+use ECorp\DomainModel\Assert\ECorpAssert;
 
-final class Uuid extends ECorpAssertAbstract
+final class Uuid
 {
     /**
      * @var string
@@ -19,8 +19,8 @@ final class Uuid extends ECorpAssertAbstract
      */
     public function __construct(string $uuid)
     {
-        $this->assert->stringNotEmpty($uuid, 'Uuid value cannot be empty!');
-        $this->assert->uuid($uuid, 'Uuid is wrong!');
+        ECorpAssert::stringNotEmpty($uuid, 'Uuid value cannot be empty!');
+        ECorpAssert::uuid($uuid, 'Uuid is wrong!');
 
         $this->uuid = $uuid;
     }

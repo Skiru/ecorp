@@ -3,11 +3,11 @@
 namespace ECorp\DomainModel\User;
 
 use ECorp\DomainModel\Assert\AssertException;
-use ECorp\DomainModel\Assert\ECorpAssertAbstract;
+use ECorp\DomainModel\Assert\ECorpAssert;
 use ECorp\DomainModel\BusinessRequirementsConstants;
 use InvalidArgumentException;
 
-final class Email extends ECorpAssertAbstract
+final class Email
 {
     /**
      * @var string
@@ -21,7 +21,7 @@ final class Email extends ECorpAssertAbstract
      */
     public function __construct(string $email)
     {
-        $this->assert->stringNotEmpty($email, 'Email cannot be empty');
+        ECorpAssert::stringNotEmpty($email, 'Email cannot be empty');
 
         if (false === filter_var($email, FILTER_VALIDATE_EMAIL)) {
             throw new InvalidArgumentException('Invalid email address.');

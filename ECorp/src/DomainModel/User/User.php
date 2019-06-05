@@ -2,9 +2,7 @@
 
 namespace ECorp\DomainModel\User;
 
-use ECorp\DomainModel\Assert\ECorpAssertAbstract;
-
-final class User extends ECorpAssertAbstract
+final class User
 {
     /**
      * @var Uuid

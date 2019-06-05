@@ -19,10 +19,10 @@ class UserControllerTest extends ECorpRestApiTest
     public function testRegisterUser()
     {
         $request = $this->httpClient->post(
-            UserControllerTest::API_URL.'/api/user',
+            UserControllerTest::API_URL.'/api/users',
             [
                 RequestOptions::JSON => [
-                    'email' => 'mkozil@ecorp.com',
+                    'email' => 'test@ecorp.com',
                     'age' => 24,
                     'username' => 'Mateusz Kozioł'
                 ]
@@ -36,10 +36,10 @@ class UserControllerTest extends ECorpRestApiTest
     public function testDoNotRegisterUserFromMicrosoft()
     {
         $request = $this->httpClient->post(
-            UserControllerTest::API_URL.'/api/user',
+            UserControllerTest::API_URL.'/api/users',
             [
                 RequestOptions::JSON => [
-                    'email' => 'mkozil@microsoft.com',
+                    'email' => 'mkoziol@microsoft.com',
                     'age' => 24,
                     'username' => 'Mateusz Kozioł'
                 ]
@@ -53,7 +53,7 @@ class UserControllerTest extends ECorpRestApiTest
     public function testDoNotRegisterUserFromOutsideOfEcorpDomain()
     {
         $request = $this->httpClient->post(
-            UserControllerTest::API_URL.'/api/user',
+            UserControllerTest::API_URL.'/api/users',
             [
                 RequestOptions::JSON => [
                     'email' => 'mkozil@somedomain.com',
@@ -70,7 +70,7 @@ class UserControllerTest extends ECorpRestApiTest
     public function testDoNotRegisterUserUnder18()
     {
         $request = $this->httpClient->post(
-            UserControllerTest::API_URL.'/api/user',
+            UserControllerTest::API_URL.'/api/users',
             [
                 RequestOptions::JSON => [
                     'email' => 'mkozil@ecorp.com',
@@ -94,9 +94,9 @@ class UserControllerTest extends ECorpRestApiTest
     {
         return [
             [['email' => 'mkoziol@ecorp.com', 'age' => 24, 'username' => 'Mateusz Kozioł'], 201],
-            [['email' => 'mkoziol@ecorp.com', 'age' => 18, 'username' => 'SuperRegisteredUser'], 201],
-            [['email' => 'mkoziol@ecorp.com', 'age' => 18, 'username' => ''], 400],
-            [['email' => 'mkoziol@ecorp.com', 'age' => 15, 'username' => 'Mateusz Kozioł'], 400],
+            [['email' => 'mkoziol2@ecorp.com', 'age' => 18, 'username' => 'SuperRegisteredUser'], 201],
+            [['email' => 'mkoziol3@ecorp.com', 'age' => 18, 'username' => ''], 400],
+            [['email' => 'mkoziol4@ecorp.com', 'age' => 15, 'username' => 'Mateusz Kozioł'], 400],
             [['email' => 'isthisokemail?', 'age' => 25, 'username' => 'Mateusz Kozioł'], 400],
         ];
     }
@@ -109,7 +109,7 @@ class UserControllerTest extends ECorpRestApiTest
     public function testRegisterUserFromDifferentData(array $userData, int $expectedResultCode)
     {
         $request = $this->httpClient->post(
-            UserControllerTest::API_URL.'/api/user',
+            UserControllerTest::API_URL.'/api/users',
             [
                 RequestOptions::JSON => $userData
             ]

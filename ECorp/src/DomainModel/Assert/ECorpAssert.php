@@ -2,6 +2,8 @@
 
 namespace ECorp\DomainModel\Assert;
 
+use ECorp\DomainModel\BusinessRequirementsConstants;
+
 final class ECorpAssert
 {
     /**
@@ -93,5 +95,34 @@ final class ECorpAssert
         }
 
         return mb_strwidth($value, $encoding);
+    }
+
+    /**
+     * @param string $domain
+     * @throws AssertException
+     */
+    public static function checkMicrosoftDomain(string $domain): void
+    {
+        if (in_array($domain, BusinessRequirementsConstants::EXCLUDED_DOMAINS)) {
+            throw new AssertException(
+                sprintf(
+                    'Email could not be from %s domain.',
+                    implode(',', BusinessRequirementsConstants::EXCLUDED_DOMAINS)
+                )
+            );
+        }
+    }
+
+    /**
+     * @param string $domain
+     * @throws AssertException
+     */
+    public static function checkEcorpDomain(string $domain): void
+    {
+        if (BusinessRequirementsConstants::DOMAIN_NAME !== $domain) {
+            throw new AssertException(
+                sprintf('Email has to be from %s domain.', BusinessRequirementsConstants::DOMAIN_NAME)
+            );
+        }
     }
 }

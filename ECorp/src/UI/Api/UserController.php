@@ -11,7 +11,6 @@ use ECorp\DomainModel\User\User;
 use ECorp\DomainModel\User\Username;
 use ECorp\DomainModel\User\Uuid as DomainUuid;
 use ECorp\Infrastructure\CommandBus\CommandBusInterface;
-use InvalidArgumentException;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -63,7 +62,7 @@ class UserController extends AbstractController
             $this->commandBus->handle($userRegisterCommand);
 
             return new JsonResponse(['uuid' => $uuid], 201);
-        } catch (InvalidArgumentException $argumentException) {
+        } catch (AssertException $argumentException) {
             return new JsonResponse(['payload' => $argumentException->getMessage()], 400);
         }
     }

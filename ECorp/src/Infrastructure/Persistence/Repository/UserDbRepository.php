@@ -7,7 +7,7 @@ use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use ECorp\DomainModel\User\User;
 use ECorp\DomainModel\User\UserRepositoryInterface;
-use ECorp\DomainModel\User\Uuid;
+use ECorp\DomainModel\Uuid;
 use ECorp\Infrastructure\Facade\UserFacade;
 use ECorp\Infrastructure\Persistence\Entity\User as UserEntity;
 use Symfony\Bridge\Doctrine\RegistryInterface;

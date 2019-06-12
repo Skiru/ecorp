@@ -2,7 +2,9 @@
 
 namespace ECorp\DomainModel\User;
 
-final class User
+use ECorp\DomainModel\Uuid;
+
+final class User implements \JsonSerializable
 {
     /**
      * @var Uuid
@@ -69,5 +71,18 @@ final class User
     public function getAge(): Age
     {
         return $this->age;
+    }
+
+    /**
+     * @return array
+     */
+    public function jsonSerialize(): array
+    {
+        return [
+            'username' => $this->username->getUsername(),
+            'age' => $this->age->getAge(),
+            'email' => $this->email->getEmail(),
+            'uuid' => $this->uuid->getString()
+        ];
     }
 }

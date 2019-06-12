@@ -11,5 +11,5 @@ final class BusinessRequirementsConstants
     const MINIMAL_USER_AGE = 18;
     const MIN_USERNAME_LENGTH = 2;
     const MAX_USERNAME_LENGTH = 20;
-    const MAX_NUMBER_OF_COMPANY_USERS = 10;
+    const MAX_NUMBER_OF_COMPANY_USERS = 1000;
 }

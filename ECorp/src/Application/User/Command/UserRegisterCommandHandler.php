@@ -2,9 +2,13 @@
 
 namespace ECorp\Application\User\Command;
 
+use ECorp\Application\Event\AggregateRoot\AggregateRootRepositoryInterface;
 use ECorp\Application\Query\User\UserQueryInterface;
 use ECorp\DomainModel\BusinessRequirementsConstants;
+use ECorp\DomainModel\User\Event\UnknownDomainEventType;
+use ECorp\Application\Event\AggregateRoot\UserAggregateRoot;
 use ECorp\DomainModel\User\UserRepositoryInterface;
+use ECorp\DomainModel\Uuid;
 
 final class UserRegisterCommandHandler
 {
@@ -19,14 +23,24 @@ final class UserRegisterCommandHandler
     private $userQuery;
 
     /**
+     * @var AggregateRootRepositoryInterface
+     */
+    private $userAggregateRootRepository;
+
+    /**
      * UserRegisterCommandHandler constructor.
      * @param UserRepositoryInterface $userRepository
      * @param UserQueryInterface $userQuery
+     * @param AggregateRootRepositoryInterface $aggregateRootRepository
      */
-    public function __construct(UserRepositoryInterface $userRepository, UserQueryInterface $userQuery)
-    {
+    public function __construct(
+        UserRepositoryInterface $userRepository,
+        UserQueryInterface $userQuery,
+        AggregateRootRepositoryInterface $aggregateRootRepository
+    ) {
         $this->userRepository = $userRepository;
         $this->userQuery = $userQuery;
+        $this->userAggregateRootRepository = $aggregateRootRepository;
     }
 
     /**
@@ -39,10 +53,22 @@ final class UserRegisterCommandHandler
             throw new UserRegisterException('There is no more available place for the user!', 409);
         }
 
+        //Tworzenie customowych kodów błedow
         if (null !== $this->userQuery->getByEmail($command->getUser()->getEmail()->getEmail())) {
             throw new UserRegisterException('User with this email already exists!', 409);
         }
 
-        $this->userRepository->register($command->getUser());
+        //Nie zapisuj od razu do repository, robimy evenciki! Zmiana 1.
+//        $this->userRepository->register($command->getUser());
+
+        $aggregateRootUuid = new Uuid(\Ramsey\Uuid\Uuid::uuid4()->toString());
+        try {
+            $aggregateRoot = new UserAggregateRoot($aggregateRootUuid);
+            $aggregateRoot->registerUser($command->getUser());
+        } catch (UnknownDomainEventType $domainEventType) {
+            throw new UserRegisterException('Internal error');
+        }
+
+        $this->userAggregateRootRepository->persist($aggregateRoot);
     }
 }

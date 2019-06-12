@@ -2,6 +2,8 @@
 
 namespace ECorp\DomainModel\User;
 
+use ECorp\DomainModel\Uuid;
+
 interface UserRepositoryInterface
 {
     /**

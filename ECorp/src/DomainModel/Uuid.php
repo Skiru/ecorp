@@ -1,6 +1,6 @@
 <?php
 
-namespace ECorp\DomainModel\User;
+namespace ECorp\DomainModel;
 
 use ECorp\DomainModel\Assert\AssertException;
 use ECorp\DomainModel\Assert\ECorpAssert;

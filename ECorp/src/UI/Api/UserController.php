@@ -12,7 +12,7 @@ use ECorp\DomainModel\User\Age;
 use ECorp\DomainModel\User\Email;
 use ECorp\DomainModel\User\User;
 use ECorp\DomainModel\User\Username;
-use ECorp\DomainModel\User\Uuid as DomainUuid;
+use ECorp\DomainModel\Uuid as DomainUuid;
 use ECorp\Infrastructure\CommandBus\CommandBusInterface;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

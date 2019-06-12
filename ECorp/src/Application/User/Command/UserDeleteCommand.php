@@ -2,7 +2,7 @@
 
 namespace ECorp\Application\User\Command;
 
-use ECorp\DomainModel\User\Uuid;
+use ECorp\DomainModel\Uuid;
 
 final class UserDeleteCommand
 {

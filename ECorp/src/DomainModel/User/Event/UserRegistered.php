@@ -20,6 +20,7 @@ final class UserRegistered implements \JsonSerializable
     private $user;
 
     /**
+     * zobacz przy persiste'owaniu
      * @var DateTime
      */
     private $ocuranceDate;

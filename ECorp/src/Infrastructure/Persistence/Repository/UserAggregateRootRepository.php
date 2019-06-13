@@ -47,6 +47,9 @@ class UserAggregateRootRepository implements AggregateRootRepositoryInterface
                 'event' => json_encode($event),
                 'class_name' => get_class($event)
             ]);
+
+
+
         }
     }
 }

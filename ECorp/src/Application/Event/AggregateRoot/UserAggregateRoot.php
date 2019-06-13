@@ -102,6 +102,7 @@ final class UserAggregateRoot implements AggregateRootInterface
     public function releaseEvents(): array
     {
         $releasedEvents = $this->events;
+        //Wywal to do innej metody
         $this->events = [];
 
         return $releasedEvents;

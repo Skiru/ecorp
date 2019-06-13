@@ -59,8 +59,9 @@ final class UserRegisterCommandHandler
         }
 
         //Nie zapisuj od razu do repository, robimy evenciki! Zmiana 1.
-//        $this->userRepository->register($command->getUser());
+//       $this->userRepository->register($command->getUser());
 
+        //musi byc takie samo, uzyc z komendy
         $aggregateRootUuid = new Uuid(\Ramsey\Uuid\Uuid::uuid4()->toString());
         try {
             $aggregateRoot = new UserAggregateRoot($aggregateRootUuid);

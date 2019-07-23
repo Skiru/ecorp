@@ -35,7 +35,7 @@ final class Age
     /**
      * @return int
      */
-    public function getAge(): int
+    public function asInt(): int
     {
         return $this->age;
     }

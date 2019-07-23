@@ -28,7 +28,7 @@ final class Uuid
     /**
      * @return string
      */
-    public function getString(): string
+    public function asString(): string
     {
         return $this->string;
     }

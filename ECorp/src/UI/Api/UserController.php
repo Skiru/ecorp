@@ -14,6 +14,7 @@ use ECorp\DomainModel\User\User;
 use ECorp\DomainModel\User\Username;
 use ECorp\DomainModel\Uuid as DomainUuid;
 use ECorp\Infrastructure\CommandBus\CommandBusInterface;
+use Exception;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -45,7 +46,7 @@ class UserController extends AbstractController
     /**
      * @param Request $request
      * @return JsonResponse
-     * @throws AssertException
+     * @throws Exception
      */
     public function registerUser(Request $request): JsonResponse
     {

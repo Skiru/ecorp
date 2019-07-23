@@ -46,7 +46,7 @@ class UserDbRepository extends ServiceEntityRepository implements UserRepository
      */
     public function delete(Uuid $uuid): void
     {
-        $entity = $this->getEntityManager()->getRepository(UserEntity::class)->findOneBy(['uuid' => $uuid->getString()]);
+        $entity = $this->getEntityManager()->getRepository(UserEntity::class)->findOneBy(['uuid' => $uuid->asString()]);
 
         $this->getEntityManager()->remove($entity);
         $this->getEntityManager()->flush();

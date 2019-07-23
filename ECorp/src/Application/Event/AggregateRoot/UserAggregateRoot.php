@@ -83,9 +83,9 @@ final class UserAggregateRoot implements AggregateRootInterface
             case UserRegistered::class:
                 /** @var UserRegistered $event uuid */
                 $this->userAggregateRootUuid = $event->getUserAggregateRootUuid();
-                $this->email = $event->getUser()->getEmail()->getEmail();
-                $this->age = $event->getUser()->getAge()->getAge();
-                $this->username = $event->getUser()->getUsername()->getUsername();
+                $this->email = $event->getUser()->getEmail()->asString();
+                $this->age = $event->getUser()->getAge()->asInt();
+                $this->username = $event->getUser()->getUsername()->asString();
                 break;
 
             default:
@@ -97,16 +97,21 @@ final class UserAggregateRoot implements AggregateRootInterface
     }
 
     /**
-     * @return object[]
+     * @inheritDoc
      */
-    public function releaseEvents(): array
+    public function getEvents(): array
     {
-        $releasedEvents = $this->events;
-        //Wywal to do innej metody
-        $this->events = [];
-
-        return $releasedEvents;
+        return $this->events;
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function removeEvents(): void
+    {
+        $this->events = [];
+    }
+
 
     /**
      * @param Uuid $aggregateRootUuid

@@ -4,6 +4,7 @@ namespace ECorp\Application\User\Command;
 
 use ECorp\Application\Event\AggregateRoot\AggregateRootRepositoryInterface;
 use ECorp\Application\Query\User\UserQueryInterface;
+use ECorp\DomainModel\Assert\AssertException;
 use ECorp\DomainModel\BusinessRequirementsConstants;
 use ECorp\DomainModel\User\Event\UnknownDomainEventType;
 use ECorp\Application\Event\AggregateRoot\UserAggregateRoot;
@@ -46,6 +47,7 @@ final class UserRegisterCommandHandler
     /**
      * @param UserRegisterCommand $command
      * @throws UserRegisterException
+     * @throws AssertException
      */
     public function handle(UserRegisterCommand $command)
     {
@@ -53,16 +55,11 @@ final class UserRegisterCommandHandler
             throw new UserRegisterException('There is no more available place for the user!', 409);
         }
 
-        //Tworzenie customowych kodów błedow
-        if (null !== $this->userQuery->getByEmail($command->getUser()->getEmail()->getEmail())) {
+        if (null !== $this->userQuery->getByEmail($command->getUser()->getEmail()->asString())) {
             throw new UserRegisterException('User with this email already exists!', 409);
         }
 
-        //Nie zapisuj od razu do repository, robimy evenciki! Zmiana 1.
-//       $this->userRepository->register($command->getUser());
-
-        //musi byc takie samo, uzyc z komendy
-        $aggregateRootUuid = new Uuid(\Ramsey\Uuid\Uuid::uuid4()->toString());
+        $aggregateRootUuid = new Uuid($command->getUser()->getUuid()->asString());
         try {
             $aggregateRoot = new UserAggregateRoot($aggregateRootUuid);
             $aggregateRoot->registerUser($command->getUser());

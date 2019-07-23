@@ -79,10 +79,10 @@ final class User implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return [
-            'username' => $this->username->getUsername(),
-            'age' => $this->age->getAge(),
-            'email' => $this->email->getEmail(),
-            'uuid' => $this->uuid->getString()
+            'username' => $this->username->asString(),
+            'age' => $this->age->asInt(),
+            'email' => $this->email->asString(),
+            'uuid' => $this->uuid->asString()
         ];
     }
 }

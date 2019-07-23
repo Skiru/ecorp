@@ -14,9 +14,9 @@ class UserFacade
     public static function fromDomainUser(User $user): UserEntity
     {
         return ($userEntity = new UserEntity())
-            ->setUuid($user->getUuid()->getString())
-            ->setUsername($user->getUsername()->getUsername())
-            ->setEmail($user->getEmail()->getEmail())
-            ->setAge($user->getAge()->getAge());
+            ->setUuid($user->getUuid()->asString())
+            ->setUsername($user->getUsername()->asString())
+            ->setEmail($user->getEmail()->asString())
+            ->setAge($user->getAge()->asInt());
     }
 }

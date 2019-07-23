@@ -38,7 +38,7 @@ final class Username
     /**
      * @return string
      */
-    public function getUsername(): string
+    public function asString(): string
     {
         return $this->username;
     }

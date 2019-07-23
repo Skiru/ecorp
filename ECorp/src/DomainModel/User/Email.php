@@ -4,7 +4,6 @@ namespace ECorp\DomainModel\User;
 
 use ECorp\DomainModel\Assert\AssertException;
 use ECorp\DomainModel\Assert\ECorpAssert;
-use ECorp\DomainModel\BusinessRequirementsConstants;
 
 final class Email
 {
@@ -36,7 +35,7 @@ final class Email
     /**
      * @return string
      */
-    public function getEmail(): string
+    public function asString(): string
     {
         return $this->email;
     }

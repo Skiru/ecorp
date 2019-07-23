@@ -6,7 +6,6 @@ use ECorp\Application\Event\AggregateRoot\AggregateRootInterface;
 use ECorp\Application\Event\AggregateRoot\AggregateRootRepositoryInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
-use Symfony\Component\Serializer\SerializerInterface;
 
 class UserAggregateRootRepository implements AggregateRootRepositoryInterface
 {
@@ -16,19 +15,11 @@ class UserAggregateRootRepository implements AggregateRootRepositoryInterface
     private $connection;
 
     /**
-     * @var SerializerInterface
-     */
-    private $serializer;
-
-    /**
-     * UserAggregateRootRepository constructor.
      * @param Connection $connection
-     * @param SerializerInterface $serializer
      */
-    public function __construct(Connection $connection, SerializerInterface $serializer)
+    public function __construct(Connection $connection)
     {
         $this->connection = $connection;
-        $this->serializer = $serializer;
     }
 
     /**
@@ -37,19 +28,16 @@ class UserAggregateRootRepository implements AggregateRootRepositoryInterface
      */
     public function persist(AggregateRootInterface $aggregateRoot): void
     {
-        $events = $aggregateRoot->releaseEvents();
+        $events = $aggregateRoot->getEvents();
 
         foreach ($events as $event) {
-//          $serializedEvent = $this->serializer->serialize($event, 'json'); PSUJE SIE COS TEN SERIALIZER SYMFONOWY, NIE MIALEM CZASU ZEBY SIE Z NIM BAWIC :(
-
             $this->connection->insert(self::USER_AGGREGATE_ROOT_TABLE_NAME, [
-                'id' => $aggregateRoot->getAggregateRootUuid()->getString(),
+                'id' => $aggregateRoot->getAggregateRootUuid()->asString(),
                 'event' => json_encode($event),
                 'class_name' => get_class($event)
             ]);
-
-
-
         }
+
+        $aggregateRoot->removeEvents();
     }
 }

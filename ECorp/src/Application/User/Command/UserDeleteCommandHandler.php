@@ -3,7 +3,6 @@
 namespace ECorp\Application\User\Command;
 
 use ECorp\Application\Query\User\UserQueryInterface;
-use ECorp\DomainModel\User\User;
 use ECorp\DomainModel\User\UserRepositoryInterface;
 
 final class UserDeleteCommandHandler
@@ -35,7 +34,7 @@ final class UserDeleteCommandHandler
      */
     public function handle(UserDeleteCommand $user): void
     {
-        if (null === $this->userQuery->getByUuid($user->getUuid()->getString())) {
+        if (null === $this->userQuery->getByUuid($user->getUuid()->asString())) {
             throw new UserDeleteException('The user you want to delete doesn\t exist!', 409);
         }
 

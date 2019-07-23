@@ -14,7 +14,12 @@ interface AggregateRootInterface
     /**
      * @return object[]
      */
-    public function releaseEvents(): array;
+    public function getEvents(): array;
+
+    /**
+     * Removes registered events from aggregate root
+     */
+    public function removeEvents(): void;
 
     /**
      * Consider using generators!

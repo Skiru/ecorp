@@ -12,7 +12,6 @@ final class UserDeleteCommand
     private $uuid;
 
     /**
-     * DeleteUserCommand constructor.
      * @param Uuid $uuid
      */
     public function __construct(Uuid $uuid)

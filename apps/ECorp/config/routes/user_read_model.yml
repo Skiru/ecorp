@@ -12,3 +12,8 @@ get_user_by_uuid:
   path: /api/users/{uuid}
   controller: ECorp\UI\Api\UserController:getUserByUuid
   methods: ['GET']
+
+homepage:
+  path: /
+  controller: ECorp\UI\Framework\HomepageController:homepage
+  methods: ['GET']

@@ -6,7 +6,7 @@ services:
       - postgres
     build: ./docker/php
     volumes:
-      - ./apps:/var/www/html
+      - .:/var/www/html
     working_dir: /var/www/html
 
   nginx:
@@ -17,7 +17,7 @@ services:
     links:
       - php
     volumes:
-      - ./apps:/var/www/html
+      - .:/var/www/html
       - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
 
   postgres:

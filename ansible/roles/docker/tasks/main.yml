@@ -2,6 +2,12 @@
 - name: Add Docker Group
   group: name=docker state=present
 
+- name: Ensure docker users are added to the docker group.
+  user:
+    name: vagrant
+    groups: docker
+    append: true
+
 - name: Install Docker's dependencies
   apt:
     name: "{{ docker__package_dependencies + docker__pip_dependencies }}"

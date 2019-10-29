@@ -27,14 +27,14 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "src/",
-            "ECorp\\": "src/"
+            "App\\": "src",
+            "ECorp\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "App\\Tests\\": "tests/",
-            "ECorp\\Tests\\": "tests/"
+            "App\\Tests\\": "tests",
+            "ECorp\\Tests\\": "tests"
         }
     },
     "replace": {

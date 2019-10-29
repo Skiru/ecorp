@@ -20,6 +20,4 @@ Vagrant.configure("2") do |config|
 
   config.vm.synced_folder ".", "/vagrant",
     create: true, group: "vagrant", owner: "vagrant"
-
-
 end

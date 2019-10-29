@@ -1,9 +1,0 @@
-register_user:
-  path: /api/users
-  controller: ECorp\UI\Api\UserController::registerUser
-  methods: ['POST']
-
-delete_user:
-  path: /api/users/{uuid}
-  controller: ECorp\UI\Api\UserController:deleteUser
-  methods: ['DELETE']

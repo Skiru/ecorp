@@ -13,5 +13,5 @@ doctrine:
                 is_bundle: false
                 type: annotation
                 dir: '%kernel.project_dir%/src/Infrastructure/Persistence/Entity'
-                prefix: 'ECorp\Infrastructure\Persistence\Entity'
-                alias: ECorp
+                prefix: 'PurpleClouds\Infrastructure\Persistence\Entity'
+                alias: PurpleClouds

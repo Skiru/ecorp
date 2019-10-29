@@ -1,0 +1,1 @@
+{"rsync":{"/vagrant":{"type":"rsync","guestpath":"/vagrant","hostpath":"/Users/mkoziol/Work/ecorp","disabled":false,"create":true,"group":"vagrant","owner":"vagrant","__vagrantfile":true}}}

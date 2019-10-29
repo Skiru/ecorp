@@ -2,7 +2,6 @@
 
 docker__edition: "ce"
 docker__channel: ["stable"]
-docker__version: ""
 docker__state: "present"
 
 docker__compose_version: ""
@@ -61,6 +60,5 @@ docker__default_pip_packages:
     src: "{{ docker__pip_virtualenv + '/bin/docker-compose' }}"
     state: "{{ docker__pip_docker_compose_state }}"
 docker__pip_packages: []
-
 docker__pip_docker_state: "present"
 docker__pip_docker_compose_state: "present"

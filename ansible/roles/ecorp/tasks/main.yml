@@ -5,7 +5,4 @@
     chdir: /vagrant/
 
 - name: Run composer install inside the container
-  command: docker exec -w /var/www/html/PurpleClouds/ECorp -it vagrant_purple_clouds_php_1 bash composer install
-  args:
-    chdir: /vagrant/
-
+  command: docker exec -w /var/www/html/PurpleClouds/ECorp -it vagrant_purple_clouds_php_1 bash -c "composer install -n || exit 0"

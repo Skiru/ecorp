@@ -19,6 +19,8 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.synced_folder ".", "/vagrant",
-    create: true, group: "vagrant", owner: "vagrant"
+   type: "nfs",
+   nfs_version: 4,
+   nfs_udp: false
 
 end

@@ -1,8 +1,20 @@
 ---
+- name: Remove existing containers
+  command: docker-compose down -v
+  args:
+    chdir: /vagrant/PurpleClouds/ECorp
+
 - name: Start the containers
   command: docker-compose up -d
   args:
-    chdir: /vagrant/
+    chdir: /vagrant/PurpleClouds/ECorp
+
+- name: Create .env file
+  file:
+    path: .env
+    state: touch
 
 - name: Run composer install inside the container
-  command: docker exec -w /var/www/html/PurpleClouds/ECorp -it vagrant_purple_clouds_php_1 bash -c "composer install -n || exit 0"
+  command: docker exec -i ecorp_purple_clouds_php_1 bash -c "composer install"
+  args:
+    warn: no

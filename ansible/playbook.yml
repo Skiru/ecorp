@@ -5,4 +5,6 @@
     - common
     - docker
     - jenkins
-    - ecorp
+
+- import_playbook: ecorp-playbook.yml
+

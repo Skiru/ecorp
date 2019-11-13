@@ -21,13 +21,13 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
     ECorp\Application\User\Command\UserRegisterCommandHandler:
-        arguments: ['@PurpleClouds\Infrastructure\Persistence\Repository\UserDbRepository', '@PurpleClouds\Infrastructure\Persistence\Doctrine\Dbal\DbalUserQuery','@PurpleClouds\Infrastructure\Persistence\Repository\UserAggregateRootRepository']
+        arguments: ['@ECorp\Infrastructure\Persistence\Repository\UserDbRepository', '@ECorp\Infrastructure\Persistence\Doctrine\Dbal\DbalUserQuery','@ECorp\Infrastructure\Persistence\Repository\UserAggregateRootRepository']
 
     ECorp\Application\User\Command\UserDeleteCommandHandler:
-        arguments: ['@PurpleClouds\Infrastructure\Persistence\Repository\UserDbRepository', '@PurpleClouds\Infrastructure\Persistence\Doctrine\Dbal\DbalUserQuery']
+        arguments: ['@ECorp\Infrastructure\Persistence\Repository\UserDbRepository', '@ECorp\Infrastructure\Persistence\Doctrine\Dbal\DbalUserQuery']
 
 
     ECorp\Infrastructure\CommandBus\CommandBus:
         calls:
-            - [registerHandler, ['PurpleClouds\Application\User\Command\UserRegisterCommand', '@PurpleClouds\Application\User\Command\UserRegisterCommandHandler']]
-            - [registerHandler, ['PurpleClouds\Application\User\Command\UserDeleteCommand', '@PurpleClouds\Application\User\Command\UserDeleteCommandHandler']]
+            - [registerHandler, ['ECorp\Application\User\Command\UserRegisterCommand', '@ECorp\Application\User\Command\UserRegisterCommandHandler']]
+            - [registerHandler, ['ECorp\Application\User\Command\UserDeleteCommand', '@ECorp\Application\User\Command\UserDeleteCommandHandler']]

@@ -1,9 +1,9 @@
 register_user:
   path: /api/users
-  controller: PurpleClouds\UI\Api\UserController::registerUser
+  controller: ECorp\UI\Api\UserController::registerUser
   methods: ['POST']
 
 delete_user:
   path: /api/users/{uuid}
-  controller: PurpleClouds\UI\Api\UserController:deleteUser
+  controller: ECorp\UI\Api\UserController:deleteUser
   methods: ['DELETE']

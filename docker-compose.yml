@@ -2,7 +2,7 @@ version: '3'
 services:
   purple_clouds_php:
     build:
-      context: PurpleClouds/ECorp
+      context: .
       dockerfile: docker/php/Dockerfile
     links:
       - purple_clouds_postgres

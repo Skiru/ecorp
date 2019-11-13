@@ -1,5 +1,0 @@
----
-- hosts: vb
-  become: true
-  roles:
-    - ecorp

@@ -4,13 +4,17 @@ RUN apt-get update && apt-get install -y libpq-dev git unzip zlib1g-dev libzip-d
 RUN docker-php-ext-install pdo pdo_pgsql zip mbstring bcmath
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-RUN pwd
-
 COPY ./composer.json ./
 COPY ./composer.lock ./
 
 RUN composer install --no-dev --no-scripts --ignore-platform-reqs
 # Install xdebug
+
+RUN  mkdir -p /var/www/html/var/log/
+COPY ./ /var/www/html
+COPY ./vendor /var/www/html/vendor
+
+RUN chmod 777 -R /var/www/html
 
 RUN pecl install xdebug
 RUN docker-php-ext-enable --ini-name xdebug.ini xdebug

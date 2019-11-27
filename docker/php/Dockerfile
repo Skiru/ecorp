@@ -13,7 +13,16 @@ RUN composer install --no-dev --no-scripts --ignore-platform-reqs
 RUN  mkdir -p /var/www/html/var/log/
 COPY ./ /var/www/html
 
-RUN chmod 777 -R /var/www/html
+COPY ./.env.dist ./.env
+ENV APP_ENV=prod \
+    APP_SECRET=ca6777ca3b9d07d5a38d4f68036f232d \
+    KERNEL_CLASS=App\Kernel \
+    APP_SECRET=s$cretf0rt3s \
+    SYMFONY_DEPRECATIONS_HELPER=999999 \
+    DATABASE_URL="pgsql://mrrobot:root@77.55.222.35:5432/purpleclouds"
+
+RUN rm -rf /var/www/html/.env* && \
+    chmod 777 -R /var/www/html
 
 RUN pecl install xdebug
 RUN docker-php-ext-enable --ini-name xdebug.ini xdebug

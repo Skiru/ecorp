@@ -21,8 +21,7 @@ ENV APP_ENV=prod \
     SYMFONY_DEPRECATIONS_HELPER=999999 \
     DATABASE_URL="pgsql://mrrobot:root@77.55.222.35:5432/purpleclouds"
 
-RUN rm -rf /var/www/html/.env* && \
-    chmod 777 -R /var/www/html
+RUN chmod 777 -R /var/www/html
 
 RUN pecl install xdebug
 RUN docker-php-ext-enable --ini-name xdebug.ini xdebug

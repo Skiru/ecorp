@@ -13,7 +13,7 @@ class HomepageController extends AbstractController
     public function homepage(): JsonResponse
     {
         return new JsonResponse([
-            'Message' => 'Hello world!!'
+            'Message' => 'Hello world!! Something has changed!'
         ]);
     }
 }

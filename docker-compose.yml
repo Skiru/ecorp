@@ -13,7 +13,7 @@ services:
   purple_clouds_nginx:
     image: nginx:latest
     ports:
-      - "8000:80"
+      - "8000:8000"
     depends_on:
       - purple_clouds_php
     links:

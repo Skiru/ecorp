@@ -8,7 +8,6 @@ COPY ./composer.json ./
 COPY ./composer.lock ./
 
 RUN composer install --no-dev --no-scripts --ignore-platform-reqs
-# Install xdebug
 
 RUN  mkdir -p /var/www/html/var/log/
 COPY ./ /var/www/html
@@ -22,12 +21,3 @@ ENV APP_ENV=prod \
     DATABASE_URL="pgsql://mrrobot:root@77.55.222.35:5432/purpleclouds"
 
 RUN chmod 777 -R /var/www/html
-
-RUN pecl install xdebug
-RUN docker-php-ext-enable --ini-name xdebug.ini xdebug
-RUN { \
-    echo 'xdebug.remote_enable=On'; \
-    echo 'xdebug.remote_autostart=Off'; \
-    echo 'xdebug.idekey=PHPSTORM'; \
-    echo 'xdebug.remote_connect_back=On'; \
-} >> /usr/local/etc/php/conf.d/xdebug.ini

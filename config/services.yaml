@@ -1,3 +1,10 @@
+fos_oauth_server:
+    db_driver: orm       # Drivers available: orm, mongodb, or propel
+    client_class:        ECorp\Infrastructure\Persistence\Idp\Entity\Client
+    access_token_class:  ECorp\Infrastructure\Persistence\Idp\Entity\AccessToken
+    refresh_token_class: ECorp\Infrastructure\Persistence\Idp\Entity\RefreshToken
+    auth_code_class:     ECorp\Infrastructure\Persistence\Idp\Entity\AuthCode
+
 parameters:
 
 services:

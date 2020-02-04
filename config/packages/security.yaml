@@ -1,0 +1,43 @@
+security:
+    providers:
+        users:
+            entity:
+                class: 'ECorp\Infrastructure\Persistence\Idp\Entity\User'
+                property: 'username'
+
+    encoders:
+        ECorp\Infrastructure\Persistence\Idp\Entity\User:
+            algorithm: bcrypt
+
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        oauth_token:
+            pattern:    ^/oauth/v2/token
+            security:   false
+
+        oauth_authorize:
+            pattern: ^/oauth/v2/auth|^/login*   # this does the magic. Just use a regex to have multi-route-firewalls
+            form_login: ~
+            anonymous: true
+
+        main:
+            anonymous: true
+#        main:
+#            pattern: ^/
+#            guard:
+#                authenticators:
+#                    - App\Security\GoogleAuthenticator
+#            #            form_login:
+#            #                check_path: login  # name to check_path route
+#            #                login_path: login    # name to login_path route
+#            logout:
+#                path: /logout
+#                target: /
+#            anonymous: ~
+
+    access_control:
+        # - { path: ^/admin, roles: ROLE_ADMIN }
+        # - { path: ^/profile, roles: ROLE_USER }

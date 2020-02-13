@@ -15,6 +15,13 @@ use Ramsey\Uuid\UuidInterface;
 class Client extends BaseClient
 {
     /**
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="SEQUENCE")
+     */
+    protected $id;
+
+    /**
      * @var UuidInterface
      *
      * @ORM\Id
@@ -22,7 +29,7 @@ class Client extends BaseClient
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class="Ramsey\Uuid\Doctrine\UuidGenerator")
      */
-    protected $id;
+    protected $uuid;
 
     /**
      * @var string

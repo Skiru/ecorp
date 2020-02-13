@@ -12,6 +12,13 @@ use Ramsey\Uuid\UuidInterface;
 class RefreshToken extends BaseRefreshToken
 {
     /**
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="SEQUENCE")
+     */
+    protected $id;
+
+    /**
      * @var UuidInterface
      *
      * @ORM\Id
@@ -19,7 +26,7 @@ class RefreshToken extends BaseRefreshToken
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class="Ramsey\Uuid\Doctrine\UuidGenerator")
      */
-    protected $id;
+    protected $uuid;
 
     /**
      * @ORM\ManyToOne(targetEntity="Client")

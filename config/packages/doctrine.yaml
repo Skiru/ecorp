@@ -16,4 +16,4 @@ doctrine:
                 type: annotation
                 dir: '%kernel.project_dir%/src/Infrastructure/Persistence/Idp/Entity'
                 prefix: 'ECorp\Infrastructure\Persistence\Idp\Entity'
-                alias: ECorp
+                alias: EC orp

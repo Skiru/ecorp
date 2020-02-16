@@ -32,7 +32,7 @@ services:
     environment:
       POSTGRES_USER: mrrobot
       POSTGRES_PASSWORD: root
-      POSTGRES_DB: purpleclouds
+      POSTGRES_DB: idp_purpleclouds
     networks: ["default", "purple_clouds_network"]
 
 networks:

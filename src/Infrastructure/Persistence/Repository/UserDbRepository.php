@@ -9,7 +9,7 @@ use ECorp\DomainModel\User\User;
 use ECorp\DomainModel\User\UserRepositoryInterface;
 use ECorp\DomainModel\Uuid;
 use ECorp\Infrastructure\Facade\UserFacade;
-use ECorp\Infrastructure\Persistence\Entity\User as UserEntity;
+use ECorp\Infrastructure\Persistence\Idp\Entity\User as UserEntity;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class UserDbRepository extends ServiceEntityRepository implements UserRepositoryInterface

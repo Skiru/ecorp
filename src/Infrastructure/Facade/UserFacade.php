@@ -3,7 +3,7 @@
 namespace ECorp\Infrastructure\Facade;
 
 use ECorp\DomainModel\User\User;
-use ECorp\Infrastructure\Persistence\Entity\User as UserEntity;
+use ECorp\Infrastructure\Persistence\Idp\Entity\User as UserEntity;
 
 class UserFacade
 {

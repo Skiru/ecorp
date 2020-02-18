@@ -1,43 +1,38 @@
 security:
-    providers:
-        users:
-            entity:
-                class: 'ECorp\Infrastructure\Persistence\Idp\Entity\User'
-                property: 'username'
+  providers:
+    users:
+      entity:
+        class: 'ECorp\Infrastructure\Persistence\Idp\Entity\User'
+        property: 'username'
 
-    encoders:
-        ECorp\Infrastructure\Persistence\Idp\Entity\User:
-            algorithm: bcrypt
+  encoders:
+    ECorp\Infrastructure\Persistence\Idp\Entity\User:
+      algorithm: bcrypt
 
-    firewalls:
-        dev:
-            pattern: ^/(_(profiler|wdt)|css|images|js)/
-            security: false
+  firewalls:
+    dev:
+      pattern: ^/(_(profiler|wdt)|css|images|js)/
+      security: false
 
-        oauth_token:
-            pattern:    ^/oauth/v2/token
-            security:   false
+    oauth_token:
+      pattern:    ^/oauth/v2/token
+      security:   false
 
-        oauth_authorize:
-            pattern: ^/oauth/v2/auth|^/login*   # this does the magic. Just use a regex to have multi-route-firewalls
-            form_login: ~
-            anonymous: true
+    oauth_authorize:
+      #      pattern: ^/oauth/v2/auth|^/idp/login*   # this does the magic. Just use a regex to have multi-route-firewalls
+      pattern: ^/oauth/v2/auth
+      form_login:
+        login_path: web_login_user
+        check_path: web_login_user
 
-        main:
-            anonymous: true
-#        main:
-#            pattern: ^/
-#            guard:
-#                authenticators:
-#                    - App\Security\GoogleAuthenticator
-#            #            form_login:
-#            #                check_path: login  # name to check_path route
-#            #                login_path: login    # name to login_path route
-#            logout:
-#                path: /logout
-#                target: /
-#            anonymous: ~
+#    main:
+#      guard:
+#        authenticators:
+#          - ECorp\Infrastructure\Security\LoginFormAuthenticator
+#        logout:
+#          path: /logout
+#          target: /
 
-#       access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+  access_control:
+    - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+    - { path: ^/profile, roles: IS_AUTHENTICATED_FULLY }

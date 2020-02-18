@@ -3,7 +3,6 @@
 namespace ECorp\Infrastructure\Persistence\Idp\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -20,8 +19,6 @@ class User implements UserInterface
     protected $id;
 
     /**
-     * @var UuidInterface
-     *
      * @ORM\Column(type="uuid", unique=true)
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class="Ramsey\Uuid\Doctrine\UuidGenerator")
@@ -29,34 +26,59 @@ class User implements UserInterface
     protected $uuid;
 
     /**
-     * @var string
      * @ORM\Column(name="username", type="string", nullable=false)
      */
     private $username;
 
     /**
-     * @var string
      * @ORM\Column(type="string", unique=true)
      */
     private $email;
 
     /**
-     * @var string
      * @ORM\Column(type="string", nullable=true)
      */
     private $password;
 
     /**
-     * @var int
      * @ORM\Column(name="age", type="integer", nullable=false)
      */
     private $age;
 
     /**
-     * @var string
      * @ORM\Column(type="string", nullable=true)
      */
     private $avatarUri;
+
+    /**
+     * @ORM\Column(type="array")
+     */
+    private $roles;
+
+    public function __construct()
+    {
+        $this->roles = ['ROLE_USER'];
+    }
+
+    /**
+     * @return string
+     */
+    public function getUuid(): string
+    {
+        return $this->uuid;
+    }
+
+    /**
+     * @param string $uuid
+     *
+     * @return UserInterface
+     */
+    public function setUuid(string $uuid): UserInterface
+    {
+        $this->uuid = $uuid;
+
+        return $this;
+    }
 
     /**
      * @return string
@@ -73,6 +95,7 @@ class User implements UserInterface
     {
         return $this->username;
     }
+
 
     /**
      * @return array
@@ -96,5 +119,28 @@ class User implements UserInterface
     public function eraseCredentials(): void
     {
         $this->password = null;
+    }
+
+    /**
+     * @param string $username
+     *
+     * @return UserInterface
+     */
+    public function setUsername(string $username): UserInterface
+    {
+        $this->username = $username;
+
+        return $this;
+    }
+
+    /**
+     * @param string $email
+     * @return UserInterface
+     */
+    public function setEmail(string $email): UserInterface
+    {
+        $this->email = $email;
+
+        return $this;
     }
 }

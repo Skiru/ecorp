@@ -18,10 +18,14 @@ class UserType extends AbstractType
         $builder
             ->add('username', TextType::class)
             ->add('email', EmailType::class)
-            ->add('password', RepeatedType::class, [
+            ->add('plainPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'first_options'  => ['label' => 'Password'],
                 'second_options' => ['label' => 'Repeat Password'],
+            ])
+            ->add('age', ChoiceType::class, [
+                'choices' => $this->getAges(),
+                'preferred_choices' => [19, 19]
             ]);
     }
 
@@ -30,5 +34,10 @@ class UserType extends AbstractType
         $resolver->setDefaults([
             'data_class' => UserFormModel::class
         ]);
+    }
+
+    private function getAges(): array
+    {
+        return range(1,99);
     }
 }

@@ -6,6 +6,6 @@ class UserFormModel
 {
     public $username;
     public $email;
-    public $password;
+    public $plainPassword;
     public $age;
 }

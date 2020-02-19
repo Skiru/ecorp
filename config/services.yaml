@@ -35,7 +35,6 @@ services:
     ECorp\Application\User\Command\UserDeleteCommandHandler:
         arguments: ['@ECorp\Infrastructure\Persistence\Repository\UserDbRepository', '@ECorp\Infrastructure\Persistence\Doctrine\Dbal\DbalUserQuery']
 
-
     ECorp\Infrastructure\CommandBus\CommandBus:
         calls:
             - [registerHandler, ['ECorp\Application\User\Command\UserRegisterCommand', '@ECorp\Application\User\Command\UserRegisterCommandHandler']]

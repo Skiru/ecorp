@@ -1,44 +1,30 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ECorp\DomainModel\User;
 
 use ECorp\DomainModel\Uuid;
 
 final class User implements \JsonSerializable
 {
-    /**
-     * @var Uuid
-     */
-    private $uuid;
+    private Uuid $uuid;
 
-    /**
-     * @var Email
-     */
-    private $email;
+    private Email $email;
 
-    /**
-     * @var Username
-     */
-    private $username;
+    private Username $username;
 
-    /**
-     * @var Age
-     */
-    private $age;
+    private Age $age;
 
-    /**
-     * UserRegisterCommand constructor.
-     * @param Email $email
-     * @param Username $username
-     * @param Age $age
-     * @param Uuid $uuid
-     */
-    public function __construct(Email $email, Username $username, Age $age, Uuid $uuid)
+    private Password $password;
+
+    public function __construct(Uuid $uuid, Email $email, Username $username, Age $age, Password $password)
     {
         $this->uuid = $uuid;
         $this->email = $email;
         $this->username = $username;
         $this->age = $age;
+        $this->password = $password;
     }
 
     /**
@@ -71,6 +57,14 @@ final class User implements \JsonSerializable
     public function getAge(): Age
     {
         return $this->age;
+    }
+
+    /**
+     * @return Password
+     */
+    public function getPassword(): Password
+    {
+        return $this->password;
     }
 
     /**

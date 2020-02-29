@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ECorp\UI\Frontend;
 
 use ECorp\Application\Query\User\UserQueryInterface;
@@ -8,10 +10,12 @@ use ECorp\Application\User\Command\UserRegisterException;
 use ECorp\DomainModel\Assert\AssertException;
 use ECorp\DomainModel\User\Age;
 use ECorp\DomainModel\User\Email;
+use ECorp\DomainModel\User\Password;
 use ECorp\DomainModel\User\User;
 use ECorp\DomainModel\User\Username;
 use ECorp\DomainModel\Uuid as DomainUuid;
 use ECorp\Infrastructure\CommandBus\CommandBusInterface;
+use ECorp\Infrastructure\Facade\UserFacade;
 use ECorp\Infrastructure\Form\User\UserFormModel;
 use ECorp\Infrastructure\Form\User\UserType;
 use Ramsey\Uuid\Uuid;
@@ -23,21 +27,10 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class IdpController extends AbstractController
 {
-    /**
-     * @var CommandBusInterface
-     */
-    private $commandBus;
+    private CommandBusInterface $commandBus;
 
-    /**
-     * @var UserQueryInterface
-     */
-    private $userQuery;
+    private UserQueryInterface $userQuery;
 
-    /**
-     * UserController constructor.
-     * @param CommandBusInterface $commandBus
-     * @param UserQueryInterface $userQuery
-     */
     public function __construct(CommandBusInterface $commandBus, UserQueryInterface $userQuery)
     {
         $this->commandBus = $commandBus;
@@ -66,10 +59,11 @@ class IdpController extends AbstractController
 
             try {
                 $user = new User(
+                    new DomainUuid($uuid),
                     new Email($userFormModel->email),
                     new Username($userFormModel->username),
                     new Age($userFormModel->age),
-                    new DomainUuid($uuid)
+                    new Password($userFormModel->plainPassword)
                 );
 
                 $userRegisterCommand = new UserRegisterCommand($user);

@@ -1,47 +1,30 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ECorp\Application\User\Command;
 
 use ECorp\Application\Event\AggregateRoot\AggregateRootRepositoryInterface;
 use ECorp\Application\Query\User\UserQueryInterface;
 use ECorp\DomainModel\Assert\AssertException;
 use ECorp\DomainModel\BusinessRequirementsConstants;
-use ECorp\DomainModel\User\Event\UnknownDomainEventType;
-use ECorp\Application\Event\AggregateRoot\UserAggregateRoot;
 use ECorp\DomainModel\User\UserRepositoryInterface;
-use ECorp\DomainModel\Uuid;
+use ECorp\Infrastructure\Facade\UserFacade;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 final class UserRegisterCommandHandler
 {
-    /**
-     * @var UserRepositoryInterface
-     */
-    private $userRepository;
+    private UserRepositoryInterface $userRepository;
 
-    /**
-     * @var UserQueryInterface
-     */
-    private $userQuery;
+    private UserQueryInterface $userQuery;
 
-    /**
-     * @var AggregateRootRepositoryInterface
-     */
-    private $userAggregateRootRepository;
+    private AggregateRootRepositoryInterface $userAggregateRootRepository;
 
-    /**
-     * UserRegisterCommandHandler constructor.
-     * @param UserRepositoryInterface $userRepository
-     * @param UserQueryInterface $userQuery
-     * @param AggregateRootRepositoryInterface $aggregateRootRepository
-     */
-    public function __construct(
-        UserRepositoryInterface $userRepository,
-        UserQueryInterface $userQuery,
-        AggregateRootRepositoryInterface $aggregateRootRepository
-    ) {
+    public function __construct(UserRepositoryInterface $userRepository, UserQueryInterface $userQuery, AggregateRootRepositoryInterface $userAggregateRootRepository)
+    {
         $this->userRepository = $userRepository;
         $this->userQuery = $userQuery;
-        $this->userAggregateRootRepository = $aggregateRootRepository;
+        $this->userAggregateRootRepository = $userAggregateRootRepository;
     }
 
     /**
@@ -59,6 +42,9 @@ final class UserRegisterCommandHandler
             throw new UserRegisterException('User with this email already exists!', 409);
         }
 
+        $this->userRepository->register($command->getUser());
+
+        /*TODO Agreegate root not now ;(
         $aggregateRootUuid = new Uuid($command->getUser()->getUuid()->asString());
         try {
             $aggregateRoot = new UserAggregateRoot($aggregateRootUuid);
@@ -67,6 +53,6 @@ final class UserRegisterCommandHandler
             throw new UserRegisterException('Internal error');
         }
 
-        $this->userAggregateRootRepository->persist($aggregateRoot);
+        $this->userAggregateRootRepository->persist($aggregateRoot);*/
     }
 }

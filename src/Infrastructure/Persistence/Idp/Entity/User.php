@@ -3,6 +3,7 @@
 namespace ECorp\Infrastructure\Persistence\Idp\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -12,18 +13,22 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class User implements UserInterface
 {
     /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue
-     */
-    protected $id;
-
-    /**
+     * @var Uuid
+     *
      * @ORM\Column(type="uuid", unique=true)
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class="Ramsey\Uuid\Doctrine\UuidGenerator")
      */
-    protected $uuid;
+    private $uuid;
+
+    /**
+     * @var int
+     *
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    protected $id;
 
     /**
      * @ORM\Column(name="username", type="string", nullable=false)
@@ -71,9 +76,9 @@ class User implements UserInterface
     /**
      * @param string $uuid
      *
-     * @return UserInterface
+     * @return User
      */
-    public function setUuid(string $uuid): UserInterface
+    public function setUuid(string $uuid): User
     {
         $this->uuid = $uuid;
 
@@ -124,9 +129,9 @@ class User implements UserInterface
     /**
      * @param string $username
      *
-     * @return UserInterface
+     * @return User
      */
-    public function setUsername(string $username): UserInterface
+    public function setUsername(string $username): User
     {
         $this->username = $username;
 
@@ -135,12 +140,42 @@ class User implements UserInterface
 
     /**
      * @param string $email
-     * @return UserInterface
+     * @return User
      */
-    public function setEmail(string $email): UserInterface
+    public function setEmail(string $email): User
     {
         $this->email = $email;
 
+        return $this;
+    }
+
+    /**
+     * @param int $age
+     * @return User
+     */
+    public function setAge(int $age): User
+    {
+        $this->age = $age;
+        return $this;
+    }
+
+    /**
+     * @param string $avatarUri
+     * @return User
+     */
+    public function setAvatarUri($avatarUri): User
+    {
+        $this->avatarUri = $avatarUri;
+        return $this;
+    }
+
+    /**
+     * @param string $password
+     * @return User
+     */
+    public function setPassword(string $password)
+    {
+        $this->password = $password;
         return $this;
     }
 }

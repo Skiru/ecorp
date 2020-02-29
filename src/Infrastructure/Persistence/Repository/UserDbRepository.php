@@ -11,16 +11,20 @@ use ECorp\DomainModel\Uuid;
 use ECorp\Infrastructure\Facade\UserFacade;
 use ECorp\Infrastructure\Persistence\Idp\Entity\User as UserEntity;
 use Symfony\Bridge\Doctrine\RegistryInterface;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class UserDbRepository extends ServiceEntityRepository implements UserRepositoryInterface
 {
+    private UserPasswordEncoderInterface $passwordEncoder;
+
     /**
-     * UserDbRepository constructor.
      * @param RegistryInterface $registry
+     * @param UserPasswordEncoderInterface $passwordEncoder
      */
-    public function __construct(RegistryInterface $registry)
+    public function __construct(RegistryInterface $registry, UserPasswordEncoderInterface $passwordEncoder)
     {
         parent::__construct($registry, UserEntity::class);
+        $this->passwordEncoder = $passwordEncoder;
     }
 
     /**
@@ -30,7 +34,7 @@ class UserDbRepository extends ServiceEntityRepository implements UserRepository
      */
     public function register(User $user): void
     {
-        $this->getEntityManager()->persist(UserFacade::fromDomainUser($user));
+        $this->getEntityManager()->persist(UserFacade::fromDomainUser($user, $this->passwordEncoder));
         $this->getEntityManager()->flush();
     }
 

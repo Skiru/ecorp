@@ -9,7 +9,7 @@ api_list_all_users:
   methods: ['GET']
 
 web_login_user:
-  path: /login
+  path: /auth/login
   controller: ECorp\UI\Frontend\IdpController:login
 
 get_user_by_uuid:

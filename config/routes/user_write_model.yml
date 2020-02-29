@@ -4,7 +4,7 @@ register_user:
   methods: ['POST']
 
 web_register_user:
-  path: /register
+  path: /auth/register
   controller: ECorp\UI\Frontend\IdpController:register
 
 delete_user:

@@ -34,5 +34,5 @@ security:
 #          target: /
 
   access_control:
-    - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+    - { path: ^/auth/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
     - { path: ^/profile, roles: IS_AUTHENTICATED_FULLY }

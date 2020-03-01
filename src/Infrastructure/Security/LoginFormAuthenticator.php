@@ -13,6 +13,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 use Symfony\Component\Security\Core\Exception\InvalidCsrfTokenException;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -75,11 +77,11 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 
         $userView = $this->userQuery->getAllByEmail($credentials['email']);
         if (!$userView) {
-            // fail authentication with a custom error
-            throw new UserLoginException('Email could not be found.');
+            throw new CustomUserMessageAuthenticationException('Email could not be found.');
         }
+
         if (!$this->passwordEncoder->isPasswordValid(UserFacade::toSecurityUser($userView), $credentials['password'])) {
-            throw new UserLoginException('Password does not match!');
+            throw new CustomUserMessageAuthenticationException('Password does not match!');
         }
 
         return UserFacade::toPurplecloudsUser($userView);
@@ -90,25 +92,9 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         return true;
     }
 
-//    public function createAuthenticatedToken(UserInterface $user, $providerKey)
-//    {
-//        return new PurpleCloudsUser(
-//            $user->getUserUuid(),
-//            $user->getUsername(),
-//            $user->getRoles(),
-//        'token'
-//        );
-//    }
-
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
         return new RedirectResponse($this->router->generate('idp_profile'));
-//        if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
-//            return new RedirectResponse($targetPath);
-//        }
-//
-//        // For example : return new RedirectResponse($this->router->generate('some_route'));
-//        throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
     }
 
     protected function getLoginUrl()

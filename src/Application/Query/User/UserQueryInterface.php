@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ECorp\Application\Query\User;
 
 interface UserQueryInterface
@@ -25,4 +27,10 @@ interface UserQueryInterface
      * @return UserView|null
      */
     public function getByEmail(string $email): ?UserView;
+
+    /**
+     * @param string $email
+     * @return SecurityUserDataView|null
+     */
+    public function getAllByEmail(string $email): ?SecurityUserDataView;
 }

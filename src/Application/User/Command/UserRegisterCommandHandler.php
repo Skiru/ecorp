@@ -6,11 +6,9 @@ namespace ECorp\Application\User\Command;
 
 use ECorp\Application\Event\AggregateRoot\AggregateRootRepositoryInterface;
 use ECorp\Application\Query\User\UserQueryInterface;
-use ECorp\DomainModel\Assert\AssertException;
 use ECorp\DomainModel\BusinessRequirementsConstants;
 use ECorp\DomainModel\User\UserRepositoryInterface;
-use ECorp\Infrastructure\Facade\UserFacade;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use ECorp\Infrastructure\Persistence\Repository\UserRepositoryException;
 
 final class UserRegisterCommandHandler
 {
@@ -30,7 +28,6 @@ final class UserRegisterCommandHandler
     /**
      * @param UserRegisterCommand $command
      * @throws UserRegisterException
-     * @throws AssertException
      */
     public function handle(UserRegisterCommand $command)
     {
@@ -42,17 +39,10 @@ final class UserRegisterCommandHandler
             throw new UserRegisterException('User with this email already exists!', 409);
         }
 
-        $this->userRepository->register($command->getUser());
-
-        /*TODO Agreegate root not now ;(
-        $aggregateRootUuid = new Uuid($command->getUser()->getUuid()->asString());
         try {
-            $aggregateRoot = new UserAggregateRoot($aggregateRootUuid);
-            $aggregateRoot->registerUser($command->getUser());
-        } catch (UnknownDomainEventType $domainEventType) {
-            throw new UserRegisterException('Internal error');
+            $this->userRepository->register($command->getUser());
+        } catch (UserRepositoryException $repositoryException) {
+            throw new UserRegisterException($repositoryException->getMessage());
         }
-
-        $this->userAggregateRootRepository->persist($aggregateRoot);*/
     }
 }

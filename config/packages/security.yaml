@@ -1,37 +1,35 @@
 security:
   providers:
     users:
-      entity:
-        class: 'ECorp\Infrastructure\Persistence\Idp\Entity\User'
-        property: 'username'
+#      entity:
+#        class: 'ECorp\Infrastructure\Persistence\Idp\Entity\User'
+#        property: 'email'
+      id: 'ECorp\Infrastructure\Security\User\PurpleCloudsUserProvider'
+#        property: email
 
   encoders:
     ECorp\Infrastructure\Persistence\Idp\Entity\User:
       algorithm: bcrypt
+    ECorp\Infrastructure\Security\User\SecurityUser:
+      algorithm: bcrypt
 
   firewalls:
-    dev:
-      pattern: ^/(_(profiler|wdt)|css|images|js)/
-      security: false
 
-    oauth_token:
-      pattern:    ^/oauth/v2/token
-      security:   false
+    main:
+      anonymous: ~
+      logout:
+        path: web_logout_user
 
-    oauth_authorize:
-      #      pattern: ^/oauth/v2/auth|^/idp/login*   # this does the magic. Just use a regex to have multi-route-firewalls
-      pattern: ^/oauth/v2/auth
       form_login:
+        use_referer: true
         login_path: web_login_user
-        check_path: web_login_user
 
-#    main:
-#      guard:
-#        authenticators:
-#          - ECorp\Infrastructure\Security\LoginFormAuthenticator
-#        logout:
-#          path: /logout
-#          target: /
+      provider: users
+      guard:
+        authenticators:
+          - ECorp\Infrastructure\Security\TokenAuthenticator
+          - ECorp\Infrastructure\Security\LoginFormAuthenticator
+        entry_point: web_login_user
 
   access_control:
     - { path: ^/auth/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }

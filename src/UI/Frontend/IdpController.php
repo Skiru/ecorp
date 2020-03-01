@@ -15,7 +15,6 @@ use ECorp\DomainModel\User\User;
 use ECorp\DomainModel\User\Username;
 use ECorp\DomainModel\Uuid as DomainUuid;
 use ECorp\Infrastructure\CommandBus\CommandBusInterface;
-use ECorp\Infrastructure\Facade\UserFacade;
 use ECorp\Infrastructure\Form\User\UserFormModel;
 use ECorp\Infrastructure\Form\User\UserType;
 use Ramsey\Uuid\Uuid;

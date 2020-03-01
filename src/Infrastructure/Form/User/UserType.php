@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ECorp\Infrastructure\Form\User;
 
 use Symfony\Component\Form\AbstractType;
@@ -25,7 +27,7 @@ class UserType extends AbstractType
             ])
             ->add('age', ChoiceType::class, [
                 'choices' => $this->getAges(),
-                'preferred_choices' => [19, 19]
+                'preferred_choices' => [18]
             ]);
     }
 
@@ -38,6 +40,6 @@ class UserType extends AbstractType
 
     private function getAges(): array
     {
-        return range(1,99);
+        return array_values(range(0,120));
     }
 }

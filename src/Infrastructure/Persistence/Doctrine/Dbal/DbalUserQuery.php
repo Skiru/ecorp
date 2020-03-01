@@ -4,6 +4,7 @@ namespace ECorp\Infrastructure\Persistence\Doctrine\Dbal;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
+use ECorp\Application\Query\User\SecurityUserDataView;
 use ECorp\Application\Query\User\UserQueryInterface;
 use ECorp\Application\Query\User\UserView;
 
@@ -94,10 +95,11 @@ class DbalUserQuery implements UserQueryInterface
     {
         $qb = $this->connection->createQueryBuilder();
         $qb
-            ->select('u.uuid')
+            ->select('u.username, u.age, u.email')
             ->from('users', 'u')
             ->where('u.email = :email')
-            ->setParameter('email', $email);
+            ->setParameter('email', $email)
+            ->setMaxResults(1);
 
         $user = $this->connection->fetchAssoc($qb->getSQL(), $qb->getParameters());
 
@@ -106,5 +108,38 @@ class DbalUserQuery implements UserQueryInterface
         }
 
         return new UserView($user['email'], $user['username'], $user['age']);
+    }
+
+    /**
+     * @param string $email
+     * @return SecurityUserDataView|null
+     * @throws DBALException
+     */
+    public function getAllByEmail(string $email): ?SecurityUserDataView
+    {
+        $qb = $this->connection->createQueryBuilder();
+        $qb
+            ->select('*')
+            ->from('users', 'u')
+            ->where('u.email = :email')
+            ->setParameter('email', $email)
+            ->setMaxResults(1);
+
+        $user = $this->connection->fetchAssoc($qb->getSQL(), $qb->getParameters());
+
+        if (!$user) {
+            return null;
+        }
+
+        return new SecurityUserDataView(
+            $user['uuid'],
+            $user['id'],
+            $user['password'],
+            $user['avatar_uri'],
+            unserialize($user['roles']),
+            $user['email'],
+            $user['username'],
+            $user['age'],
+        );
     }
 }

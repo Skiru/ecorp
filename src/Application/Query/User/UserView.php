@@ -1,30 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ECorp\Application\Query\User;
 
-final class UserView implements \JsonSerializable
+use JsonSerializable;
+
+class UserView implements JsonSerializable
 {
-    /**
-     * @var string
-     */
-    private $email;
+    protected string $email;
 
-    /**
-     * @var string
-     */
-    private $username;
+    protected string $username;
 
-    /**
-     * @var int
-     */
-    private $age;
+    protected int $age;
 
-    /**
-     * UserView constructor.
-     * @param string $email
-     * @param string $username
-     * @param int $age
-     */
     public function __construct(string $email, string $username, int $age)
     {
         $this->email = $email;
@@ -32,33 +21,21 @@ final class UserView implements \JsonSerializable
         $this->age = $age;
     }
 
-    /**
-     * @return string
-     */
     public function getEmail(): string
     {
         return $this->email;
     }
 
-    /**
-     * @return string
-     */
     public function getUsername(): string
     {
         return $this->username;
     }
 
-    /**
-     * @return int
-     */
     public function getAge(): int
     {
         return $this->age;
     }
 
-    /**
-     * @return array
-     */
     public function jsonSerialize(): array
     {
         return [

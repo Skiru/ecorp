@@ -11,6 +11,16 @@ api_list_all_users:
 web_login_user:
   path: /auth/login
   controller: ECorp\UI\Frontend\IdpController:login
+  methods: ['GET', 'POST']
+
+web_logout_user:
+  path: /logout
+  methods: ['GET']
+
+idp_profile:
+  path: /profile
+  controller: ECorp\UI\Frontend\IdpController:profile
+  methods: ['GET', 'POST']
 
 get_user_by_uuid:
   path: /api/users/{uuid}

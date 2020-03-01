@@ -1,10 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ECorp\Infrastructure\Security;
 
-use Doctrine\ORM\EntityManagerInterface;
+use ECorp\Application\Query\User\UserQueryInterface;
+use ECorp\Infrastructure\Facade\UserFacade;
+use ECorp\Infrastructure\Security\User\PurpleCloudsUser;
+use Ramsey\Uuid\Uuid;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -18,33 +23,23 @@ use Symfony\Component\Security\Guard\Authenticator\AbstractFormLoginAuthenticato
 
 class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
+    public const LOGIN_ROUTE_NAME = 'web_login_user';
 
-    /**
-     * @var RouterInterface
-     */
-    private $router;
+    private UserQueryInterface $userQuery;
 
-    /**
-     * @var CsrfTokenManagerInterface
-     */
-    private $csrfTokenManager;
+    private RouterInterface $router;
 
-    /**
-     * @var UserPasswordEncoderInterface
-     */
-    private $passwordEncoder;
+    private CsrfTokenManagerInterface $csrfTokenManager;
+
+    private UserPasswordEncoderInterface $passwordEncoder;
 
     public function __construct(
-        EntityManagerInterface $entityManager,
+        UserQueryInterface $userQuery,
         RouterInterface $router,
         CsrfTokenManagerInterface $csrfTokenManager,
         UserPasswordEncoderInterface $passwordEncoder
     ) {
-        $this->entityManager = $entityManager;
+        $this->userQuery = $userQuery;
         $this->router = $router;
         $this->csrfTokenManager = $csrfTokenManager;
         $this->passwordEncoder = $passwordEncoder;
@@ -52,7 +47,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 
     public function supports(Request $request): bool
     {
-        return 'web_login_user' === $request->attributes->get('_route')
+        return self::LOGIN_ROUTE_NAME === $request->attributes->get('_route')
             && $request->isMethod('POST');
     }
 
@@ -78,29 +73,42 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
             throw new InvalidCsrfTokenException();
         }
 
-        $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $credentials['email']]);
-
-        if (!$user) {
+        $userView = $this->userQuery->getAllByEmail($credentials['email']);
+        if (!$userView) {
             // fail authentication with a custom error
-            throw new CustomUserMessageAuthenticationException('Email could not be found.');
+            throw new UserLoginException('Email could not be found.');
+        }
+        if (!$this->passwordEncoder->isPasswordValid(UserFacade::toSecurityUser($userView), $credentials['password'])) {
+            throw new UserLoginException('Password does not match!');
         }
 
-        return $user;
+        return UserFacade::toPurplecloudsUser($userView);
     }
 
     public function checkCredentials($credentials, UserInterface $user)
     {
-        return $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
+        return true;
     }
+
+//    public function createAuthenticatedToken(UserInterface $user, $providerKey)
+//    {
+//        return new PurpleCloudsUser(
+//            $user->getUserUuid(),
+//            $user->getUsername(),
+//            $user->getRoles(),
+//        'token'
+//        );
+//    }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
-        if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
-            return new RedirectResponse($targetPath);
-        }
-
-        // For example : return new RedirectResponse($this->router->generate('some_route'));
-        throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
+        return new RedirectResponse($this->router->generate('idp_profile'));
+//        if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
+//            return new RedirectResponse($targetPath);
+//        }
+//
+//        // For example : return new RedirectResponse($this->router->generate('some_route'));
+//        throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
     }
 
     protected function getLoginUrl()

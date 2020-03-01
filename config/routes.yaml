@@ -7,4 +7,3 @@ fos_oauth_server_authorize:
 app_directory:
     resource: 'routes/'
     type: directory
-

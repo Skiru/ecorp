@@ -1,11 +1,7 @@
 security:
   providers:
     users:
-#      entity:
-#        class: 'ECorp\Infrastructure\Persistence\Idp\Entity\User'
-#        property: 'email'
       id: 'ECorp\Infrastructure\Security\User\PurpleCloudsUserProvider'
-#        property: email
 
   encoders:
     ECorp\Infrastructure\Persistence\Idp\Entity\User:
@@ -21,8 +17,8 @@ security:
         path: web_logout_user
 
       form_login:
-        use_referer: true
         login_path: web_login_user
+        use_referer: true
 
       provider: users
       guard:
@@ -30,6 +26,18 @@ security:
           - ECorp\Infrastructure\Security\TokenAuthenticator
           - ECorp\Infrastructure\Security\LoginFormAuthenticator
         entry_point: web_login_user
+
+    oauth_token:
+      pattern: ^/oauth/v2/token
+      security: false
+
+    oauth_authorize:
+      pattern: ^/oauth/v2/auth|^/auth/login
+      form_login:
+        provider: users
+        login_path: web_login_user
+        check_path: web_login_user
+        use_referer: true
 
   access_control:
     - { path: ^/auth/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }

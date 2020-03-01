@@ -1,3 +1,5 @@
+parameters:
+
 fos_oauth_server:
     db_driver: orm       # Drivers available: orm, mongodb, or propel
     client_class:        ECorp\Infrastructure\Persistence\Idp\Entity\Client
@@ -5,10 +7,11 @@ fos_oauth_server:
     refresh_token_class: ECorp\Infrastructure\Persistence\Idp\Entity\RefreshToken
     auth_code_class:     ECorp\Infrastructure\Persistence\Idp\Entity\AuthCode
     service:
-        user_provider: ECorp\Infrastructure\Persistence\Idp\Entity\User
-
-
-parameters:
+        user_provider: ECorp\Infrastructure\Security\User\PurpleCloudsUserProvider
+        options:
+            access_token_lifetime: 86400
+            refresh_token_lifetime: 1209600
+            auth_code_lifetime: 30
 
 services:
     # default configuration for services in *this* file

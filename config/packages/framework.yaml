@@ -11,7 +11,18 @@ framework:
         cookie_secure: auto
         cookie_samesite: lax
 
+
     #esi: true
     #fragments: true
     php_errors:
         log: true
+
+    templating:
+        hinclude_default_template:  ~
+        form:
+            resources:
+                - FrameworkBundle:Form
+        cache: ~
+        engines:
+            - twig
+        loaders: []

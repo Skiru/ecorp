@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ECorp\DomainModel\User;
 
 use ECorp\DomainModel\Assert\AssertException;
@@ -10,24 +12,19 @@ final class Age
 {
     const STUPID_USER_AGE_INPUT = 150;
 
-    /**
-     * @var int
-     */
-    private $age;
+    private int $age;
 
     /**
-     * Age constructor.
-     * @param int $age
      * @throws AssertException
      */
     public function __construct(int $age)
     {
-        ECorpAssert::greaterThanEq(
+        ECorpAssert::lessThan(
             $age,
             BusinessRequirementsConstants::MINIMAL_USER_AGE,
             sprintf('Age can not be less than %s', BusinessRequirementsConstants::MINIMAL_USER_AGE)
         );
-        ECorpAssert::lessThan($age, self::STUPID_USER_AGE_INPUT, 'Are you sure about the age???');
+        ECorpAssert::greaterThanEq($age, self::STUPID_USER_AGE_INPUT, 'Are you sure about the age???');
 
         $this->age = $age;
     }

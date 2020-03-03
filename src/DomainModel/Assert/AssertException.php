@@ -2,9 +2,9 @@
 
 namespace ECorp\DomainModel\Assert;
 
-use Exception;
+use ECorp\DomainModel\Exception\ECorpException;
 
-class AssertException extends Exception
+class AssertException extends ECorpException
 {
 
 }

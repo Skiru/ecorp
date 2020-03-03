@@ -8,6 +8,20 @@ api_list_all_users:
   controller: ECorp\UI\Api\UserController::listUsers
   methods: ['GET']
 
+web_login_user:
+  path: /auth/login
+  controller: ECorp\UI\Frontend\IdpController:login
+  methods: ['GET', 'POST']
+
+web_logout_user:
+  path: /logout
+  methods: ['GET']
+
+idp_profile:
+  path: /profile
+  controller: ECorp\UI\Frontend\IdpController:profile
+  methods: ['GET', 'POST']
+
 get_user_by_uuid:
   path: /api/users/{uuid}
   controller: ECorp\UI\Api\UserController:getUserByUuid
@@ -15,5 +29,5 @@ get_user_by_uuid:
 
 homepage:
   path: /
-  controller: ECorp\UI\Frontend\HomepageController:homepage
+  controller: ECorp\UI\Frontend\IdpController:homepage
   methods: ['GET']

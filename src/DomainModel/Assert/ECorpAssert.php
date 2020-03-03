@@ -14,7 +14,7 @@ final class ECorpAssert
      */
     public static function greaterThanEq(int $value, int $limit, string $message): void
     {
-        if ($value < $limit) {
+        if ($value >= $limit) {
             throw new AssertException($message);
         }
     }
@@ -27,7 +27,7 @@ final class ECorpAssert
      */
     public static function lessThan(int $value, int $limit, string $message): void
     {
-        if ($value >= $limit) {
+        if ($value < $limit) {
             throw new AssertException($message);
         }
     }

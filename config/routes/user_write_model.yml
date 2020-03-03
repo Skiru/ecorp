@@ -3,6 +3,10 @@ register_user:
   controller: ECorp\UI\Api\UserController::registerUser
   methods: ['POST']
 
+web_register_user:
+  path: /auth/register
+  controller: ECorp\UI\Frontend\IdpController:register
+
 delete_user:
   path: /api/users/{uuid}
   controller: ECorp\UI\Api\UserController:deleteUser

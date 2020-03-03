@@ -3,12 +3,16 @@
 namespace ECorp\DomainModel\User;
 
 use ECorp\DomainModel\Uuid;
+use ECorp\Infrastructure\Persistence\Repository\UserRepositoryException;
 
 interface UserRepositoryInterface
 {
     /**
      * @param User $user
+     *
      * @return void
+     *
+     * @throws UserRepositoryException
      */
     public function register(User $user): void;
 

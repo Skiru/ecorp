@@ -4,17 +4,21 @@
 
 {% block body %}
 
+    {{ form_start(form, {'attr': {'class':'form-signin'}}) }}
+
     {% if error is defined %}
         <div class="alert alert-danger">{{ error }}</div>
     {% endif %}
 
-    {{ form_start(form) }}
+    <h1 class="h3 mb-3 font-weight-normal">Please sign up</h1>
         {{ form_row(form.username) }}
         {{ form_row(form.email) }}
         {{ form_row(form.plainPassword.first) }}
         {{ form_row(form.plainPassword.second) }}
         {{ form_row(form.age) }}
 
-        <button type="submit">Register!</button>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign up</button>
+        <a href="{{ path('web_login_user') }}">Already have an account? Log in here</a>
+        <p class="mt-5 mb-3 text-muted">&copy; PurpleClouds 2020</p>
     {{ form_end(form) }}
 {% endblock %}

@@ -90,10 +90,9 @@ class IdpController extends AbstractController
 
     public function profile(): Response
     {
-        dump($this->getUser());
-        die;
-
-        return $this->render('admin/profile.html.twig', []);
+        return $this->render('admin/profile.html.twig', [
+            'user' => $this->getUser()
+        ]);
     }
 
     /**

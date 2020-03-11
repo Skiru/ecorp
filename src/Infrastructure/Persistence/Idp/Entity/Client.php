@@ -41,4 +41,12 @@ class Client extends BaseClient
         parent::__construct();
         // your own logic
     }
+
+    /**
+     * @param UuidInterface $uuid
+     */
+    public function setUuid(UuidInterface $uuid): void
+    {
+        $this->uuid = $uuid;
+    }
 }

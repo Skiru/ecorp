@@ -7,6 +7,10 @@ web_register_user:
   path: /auth/register
   controller: ECorp\UI\Frontend\IdpController:register
 
+web_idp_create_client:
+  path: /profile/client/create
+  controller: ECorp\UI\Frontend\IdpController:createIdpClient
+
 delete_user:
   path: /api/users/{uuid}
   controller: ECorp\UI\Api\UserController:deleteUser

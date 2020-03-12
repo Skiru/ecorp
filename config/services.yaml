@@ -7,7 +7,9 @@ fos_oauth_server:
     refresh_token_class: ECorp\Infrastructure\Persistence\Idp\Entity\RefreshToken
     auth_code_class:     ECorp\Infrastructure\Persistence\Idp\Entity\AuthCode
     service:
-        user_provider: null
+#        user_provider: null
+        storage: ECorp\Infrastructure\Storage\IdpStorage
+#        auth_code_manager:      fos_oauth_server.auth_code_manager.default
         options:
             access_token_lifetime: 86400
             refresh_token_lifetime: 1209600
@@ -45,6 +47,6 @@ services:
             - [registerHandler, ['ECorp\Application\User\Command\UserRegisterCommand', '@ECorp\Application\User\Command\UserRegisterCommandHandler']]
             - [registerHandler, ['ECorp\Application\User\Command\UserDeleteCommand', '@ECorp\Application\User\Command\UserDeleteCommandHandler']]
 
-    ECorp\Infrastructure\EventListener\IdpAuthorizationEventListener:
-        tags:
-            - { name: kernel.event_listener, event: fos_oauth_server.pre_authorization_process, method: onPreAuthorizationProcess }
+    ECorp\Infrastructure\Storage\IdpStorage:
+        arguments:
+            $userProvider: '@ECorp\Infrastructure\Security\User\IdpUserProvider'

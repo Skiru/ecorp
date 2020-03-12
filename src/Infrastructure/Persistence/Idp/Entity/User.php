@@ -65,12 +65,32 @@ class User implements UserInterface
         $this->roles = ['ROLE_USER'];
     }
 
+    public function setId(int $id): User
+    {
+        $this->id = $id;
+        return $this;
+    }
+
+    public function setRoles(array $roles): User
+    {
+        $this->roles = $roles;
+        return $this;
+    }
+
     /**
-     * @return string
+     * @return Uuid
      */
-    public function getUuid(): string
+    public function getUuid(): Uuid
     {
         return $this->uuid;
+    }
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
     }
 
     /**
@@ -86,30 +106,11 @@ class User implements UserInterface
     }
 
     /**
-     * @return string
-     */
-    public function getPassword(): string
-    {
-        return $this->password;
-    }
-
-    /**
-     * @return string
-     */
-    public function getUsername(): string
-    {
-        return $this->username;
-    }
-
-
-    /**
      * @return array
      */
     public function getRoles(): array
     {
-        return [
-            'ROLE_USER'
-        ];
+        $this->roles;
     }
 
     /**
@@ -126,11 +127,22 @@ class User implements UserInterface
         $this->password = null;
     }
 
-    /**
-     * @param string $username
-     *
-     * @return User
-     */
+    public function getPassword(): ?string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(?string $password)
+    {
+        $this->password = $password;
+        return $this;
+    }
+
+    public function getUsername(): string
+    {
+        return $this->username;
+    }
+
     public function setUsername(string $username): User
     {
         $this->username = $username;
@@ -138,10 +150,6 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * @param string $email
-     * @return User
-     */
     public function setEmail(string $email): User
     {
         $this->email = $email;
@@ -149,33 +157,54 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * @param int $age
-     * @return User
-     */
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
     public function setAge(int $age): User
     {
         $this->age = $age;
         return $this;
     }
 
-    /**
-     * @param string $avatarUri
-     * @return User
-     */
-    public function setAvatarUri($avatarUri): User
+    public function getAge(): int
+    {
+        return $this->age;
+    }
+
+    public function getAvatarUri(): ?string
+    {
+        return $this->avatarUri;
+    }
+
+    public function setAvatarUri(?string $avatarUri): User
     {
         $this->avatarUri = $avatarUri;
         return $this;
     }
 
-    /**
-     * @param string $password
-     * @return User
-     */
-    public function setPassword(string $password)
-    {
-        $this->password = $password;
-        return $this;
+    public static function buildFromParams(
+        string $uuid,
+        int $id,
+        string $userName,
+        string $email,
+        ?string $password,
+        int $age,
+        ?string $avatarUri,
+        array $roles = ['ROLE_USER']
+    ): User {
+        $user = new User();
+        $user
+            ->setUuid($uuid)
+            ->setUsername($userName)
+            ->setId($id)
+            ->setEmail($email)
+            ->setAge($age)
+            ->setRoles($roles)
+            ->setPassword($password)
+            ->setAvatarUri($avatarUri);
+
+        return $user;
     }
 }

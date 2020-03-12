@@ -23,7 +23,6 @@ security:
       provider: users
       guard:
         authenticators:
-          - ECorp\Infrastructure\Security\TokenAuthenticator
           - ECorp\Infrastructure\Security\LoginFormAuthenticator
         entry_point: web_login_user
 

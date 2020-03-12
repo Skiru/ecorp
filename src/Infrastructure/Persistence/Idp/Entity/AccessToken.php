@@ -12,13 +12,6 @@ use Ramsey\Uuid\UuidInterface;
 class AccessToken extends BaseAccessToken
 {
     /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue
-     */
-    protected $id;
-
-    /**
      * @var UuidInterface
      *
      * @ORM\Column(type="uuid", unique=true)
@@ -26,6 +19,13 @@ class AccessToken extends BaseAccessToken
      * @ORM\CustomIdGenerator(class="Ramsey\Uuid\Doctrine\UuidGenerator")
      */
     protected $uuid;
+
+    /**
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue
+     */
+    protected $id;
 
     /**
      * @ORM\ManyToOne(targetEntity="Client")

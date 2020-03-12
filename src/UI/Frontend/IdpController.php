@@ -23,6 +23,7 @@ use ECorp\Infrastructure\Security\User\PurpleCloudsUser;
 use FOS\OAuthServerBundle\Entity\ClientManager;
 use FOS\OAuthServerBundle\Model\ClientManagerInterface;
 use Ramsey\Uuid\Uuid;
+use Symfony\Bridge\Doctrine\Security\User\EntityUserProvider;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -122,7 +123,8 @@ class IdpController extends AbstractController
             $client->setAllowedGrantTypes([$idpClientModel->grantType]);
             /** @var PurpleCloudsUser $user */
             $user = $this->getUser();
-            $client->setUuid($user->getUserUuid());
+            $client->setUuid(Uuid::uuid4());
+            $client->setScopes('profile');
             $this->clientManager->updateClient($client);
         }
 

@@ -15,13 +15,6 @@ use Ramsey\Uuid\UuidInterface;
 class Client extends BaseClient
 {
     /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue
-     */
-    protected $id;
-
-    /**
      * @var UuidInterface
      *
      * @ORM\Column(type="uuid", unique=true)
@@ -31,10 +24,17 @@ class Client extends BaseClient
     protected $uuid;
 
     /**
-     * @var string
-     * @ORM\Column(type="string", name="scope")
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue
      */
-    private $scope;
+    protected $id;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string", name="scopes")
+     */
+    private $scopes;
 
     public function __construct()
     {
@@ -48,5 +48,13 @@ class Client extends BaseClient
     public function setUuid(UuidInterface $uuid): void
     {
         $this->uuid = $uuid;
+    }
+
+    /**
+     * @param string $scopes
+     */
+    public function setScopes(string $scopes): void
+    {
+        $this->scopes = $scopes;
     }
 }

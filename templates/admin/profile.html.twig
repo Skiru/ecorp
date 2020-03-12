@@ -51,15 +51,17 @@
                 </section>
 
                 <section class="justify-content-lg-start">
-                    Register new client:
+                    <div class="col-md-4">
+                        Register new client:
 
-                    {{ form_start(idp_client_form, {'attr': {'class':'form-signin'}, 'action': path('web_idp_create_client')}) }}
+                        {{ form_start(idp_client_form, {'attr': {'class':'form-signin'}, 'action': path('web_idp_create_client')}) }}
 
-                    {{ form_row(idp_client_form.redirectUri) }}
-                    {{ form_row(idp_client_form.grantType) }}
+                        {{ form_row(idp_client_form.redirectUri) }}
+                        {{ form_row(idp_client_form.grantType) }}
 
-                    <button class="btn btn-lg btn-primary btn-block" type="submit">Create client</button>
-                    {{ form_end(idp_client_form) }}
+                        <button class="btn btn-lg btn-primary btn-block" type="submit">Create client</button>
+                        {{ form_end(idp_client_form) }}
+                    </div>
                 </section>
             </main>
         </div>

@@ -7,11 +7,12 @@ fos_oauth_server:
     refresh_token_class: ECorp\Infrastructure\Persistence\Idp\Entity\RefreshToken
     auth_code_class:     ECorp\Infrastructure\Persistence\Idp\Entity\AuthCode
     service:
-        user_provider: ECorp\Infrastructure\Security\User\PurpleCloudsUserProvider
+        user_provider: null
         options:
             access_token_lifetime: 86400
             refresh_token_lifetime: 1209600
             auth_code_lifetime: 30
+            supported_scopes: profile
 
 services:
     # default configuration for services in *this* file
@@ -43,3 +44,7 @@ services:
         calls:
             - [registerHandler, ['ECorp\Application\User\Command\UserRegisterCommand', '@ECorp\Application\User\Command\UserRegisterCommandHandler']]
             - [registerHandler, ['ECorp\Application\User\Command\UserDeleteCommand', '@ECorp\Application\User\Command\UserDeleteCommandHandler']]
+
+    ECorp\Infrastructure\EventListener\IdpAuthorizationEventListener:
+        tags:
+            - { name: kernel.event_listener, event: fos_oauth_server.pre_authorization_process, method: onPreAuthorizationProcess }

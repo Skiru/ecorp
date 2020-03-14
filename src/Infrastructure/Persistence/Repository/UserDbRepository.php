@@ -10,7 +10,6 @@ use ECorp\DomainModel\User\UserRepositoryInterface;
 use ECorp\DomainModel\Uuid;
 use ECorp\Infrastructure\Facade\UserFacade;
 use ECorp\Infrastructure\Persistence\Idp\Entity\User as UserEntity;
-use Exception;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Throwable;

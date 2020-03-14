@@ -19,6 +19,7 @@ use ECorp\Infrastructure\Form\IdpClient\IdpClientModel;
 use ECorp\Infrastructure\Form\IdpClient\IdpClientType;
 use ECorp\Infrastructure\Form\User\UserFormModel;
 use ECorp\Infrastructure\Form\User\UserType;
+use ECorp\Infrastructure\Idp\ClientHandler;
 use ECorp\Infrastructure\Security\User\PurpleCloudsUser;
 use FOS\OAuthServerBundle\Entity\ClientManager;
 use FOS\OAuthServerBundle\Model\ClientManagerInterface;
@@ -38,11 +39,14 @@ class IdpController extends AbstractController
 
     private ClientManagerInterface $clientManager;
 
-    public function __construct(CommandBusInterface $commandBus, UserQueryInterface $userQuery, ClientManagerInterface $clientManager)
+    private ClientHandler $clientHandler;
+
+    public function __construct(CommandBusInterface $commandBus, UserQueryInterface $userQuery, ClientManagerInterface $clientManager, ClientHandler $clientHandler)
     {
         $this->commandBus = $commandBus;
         $this->userQuery = $userQuery;
         $this->clientManager = $clientManager;
+        $this->clientHandler = $clientHandler;
     }
 
     public function login(AuthenticationUtils $authenticationUtils): Response
@@ -104,10 +108,12 @@ class IdpController extends AbstractController
     {
         $idpClientModel = new IdpClientModel();
         $clientCreateForm = $this->createForm(IdpClientType::class, $idpClientModel);
+        $clients = $this->clientHandler->findAllClients();
 
         return $this->render('admin/profile.html.twig', [
             'user' => $this->getUser(),
-            'idp_client_form' => $clientCreateForm->createView()
+            'idp_client_form' => $clientCreateForm->createView(),
+            'clients' => $clients
         ]);
     }
 

@@ -126,6 +126,8 @@ class IdpController extends AbstractController
         $clientCreateForm->handleRequest($request);
 
         if ($clientCreateForm->isSubmitted() && $clientCreateForm->isValid()) {
+            //TODO add here command construction
+
             $client = $this->clientManager->createClient();
             $client->setRedirectUris([$idpClientModel->redirectUri]);
             $client->setAllowedGrantTypes([$idpClientModel->grantType]);

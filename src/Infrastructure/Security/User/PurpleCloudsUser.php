@@ -8,7 +8,7 @@ use ECorp\Application\Query\User\SecurityUserDataView;
 use ECorp\Infrastructure\Persistence\Idp\Entity\User;
 use Ramsey\Uuid\UuidInterface;
 
-final class PurpleCloudsUser implements ECorpIdpUserInterface
+final class PurpleCloudsUser implements ECorpUserIdentityInterface
 {
     private UuidInterface $userUuid;
     private string $email;

@@ -6,7 +6,7 @@ namespace ECorp\Infrastructure\Security\User;
 
 use Ramsey\Uuid\UuidInterface;
 
-class SecurityUser implements ECorpIdpUserInterface
+class SecurityUser implements ECorpUserIdentityInterface
 {
     private UuidInterface $uuid;
     private int $id;

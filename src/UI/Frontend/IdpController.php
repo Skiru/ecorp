@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace ECorp\UI\Frontend;
 
+use ECorp\Application\Query\Client\ClientQueryInterface;
 use ECorp\Application\Query\User\UserQueryInterface;
 use ECorp\Application\User\Command\UserRegisterCommand;
 use ECorp\Application\User\Command\UserRegisterException;
@@ -21,10 +22,8 @@ use ECorp\Infrastructure\Form\User\UserFormModel;
 use ECorp\Infrastructure\Form\User\UserType;
 use ECorp\Infrastructure\Idp\ClientHandler;
 use ECorp\Infrastructure\Security\User\PurpleCloudsUser;
-use FOS\OAuthServerBundle\Entity\ClientManager;
 use FOS\OAuthServerBundle\Model\ClientManagerInterface;
 use Ramsey\Uuid\Uuid;
-use Symfony\Bridge\Doctrine\Security\User\EntityUserProvider;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -41,12 +40,15 @@ class IdpController extends AbstractController
 
     private ClientHandler $clientHandler;
 
-    public function __construct(CommandBusInterface $commandBus, UserQueryInterface $userQuery, ClientManagerInterface $clientManager, ClientHandler $clientHandler)
+    private ClientQueryInterface $clientQuery;
+
+    public function __construct(CommandBusInterface $commandBus, UserQueryInterface $userQuery, ClientManagerInterface $clientManager, ClientHandler $clientHandler, ClientQueryInterface $clientQuery)
     {
         $this->commandBus = $commandBus;
         $this->userQuery = $userQuery;
         $this->clientManager = $clientManager;
         $this->clientHandler = $clientHandler;
+        $this->clientQuery = $clientQuery;
     }
 
     public function login(AuthenticationUtils $authenticationUtils): Response
@@ -108,7 +110,7 @@ class IdpController extends AbstractController
     {
         $idpClientModel = new IdpClientModel();
         $clientCreateForm = $this->createForm(IdpClientType::class, $idpClientModel);
-        $clients = $this->clientHandler->findAllClients();
+        $clients = $this->clientQuery->getAll();
 
         return $this->render('admin/profile.html.twig', [
             'user' => $this->getUser(),

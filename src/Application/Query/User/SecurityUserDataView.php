@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ECorp\Application\Query\User;
 
 class SecurityUserDataView extends UserView

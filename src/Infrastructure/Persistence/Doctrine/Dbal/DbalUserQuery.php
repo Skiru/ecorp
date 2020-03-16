@@ -2,28 +2,14 @@
 
 namespace ECorp\Infrastructure\Persistence\Doctrine\Dbal;
 
-use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
 use ECorp\Application\Query\User\SecurityUserDataView;
 use ECorp\Application\Query\User\UserQueryInterface;
 use ECorp\Application\Query\User\UserView;
+use ECorp\Infrastructure\Persistence\Doctrine\AbstractQuery;
 
-class DbalUserQuery implements UserQueryInterface
+class DbalUserQuery extends AbstractQuery implements UserQueryInterface
 {
-    /**
-     * @var Connection
-     */
-    private $connection;
-
-    /**
-     * DbalUserQuery constructor.
-     * @param Connection $connection
-     */
-    public function __construct(Connection $connection)
-    {
-        $this->connection = $connection;
-    }
-
     /**
      * @return int
      * @throws DBALException
@@ -65,9 +51,6 @@ class DbalUserQuery implements UserQueryInterface
         return new UserView($user['email'], $user['username'], $user['age']);
     }
 
-    /**
-     * @return array
-     */
     public function getAll(): array
     {
         $qb = $this->connection->createQueryBuilder();

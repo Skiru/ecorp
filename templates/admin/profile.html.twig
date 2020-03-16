@@ -53,12 +53,24 @@
                     </ul>
 
                 </section>
-
-                <h2>Section title</h2>
+                <h2>Registered IDP Client applications</h2>
                 <section class="justify-content-lg-start order-bottom my-2">
-                    <div class="col-md-4">
-                        Register new client:
-
+                    <div class="col-xs-12 col-md-6">
+                        Already registered clients:
+                        <ul class="list-group">
+                            {% for client in clients %}
+                                <li class="list-group-item">
+                                    Client uuid: <strong>{{ client.Uuid.asString }}</strong> <br/>
+                                    Client id: <strong>{{ client.clientId }}</strong> <br/>
+                                    Client secret: <strong>{{ client.secret }}</strong><br/>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </section>
+                <h2>Register new client</h2>
+                <section class="justify-content-lg-center order-bottom my-2">
+                    <div class="col-xs-12 col-md-6">
                         {{ form_start(idp_client_form, {'attr': {'class':'form-signin'}, 'action': path('web_idp_create_client')}) }}
 
                         {{ form_row(idp_client_form.redirectUri) }}

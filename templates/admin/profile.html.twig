@@ -51,7 +51,6 @@
                     <ul>
                         <li>email {{ user.email }}</li>
                     </ul>
-
                 </section>
                 <h2>Registered IDP Client applications</h2>
                 <section class="justify-content-lg-start order-bottom my-2">
@@ -60,6 +59,11 @@
                         <ul class="list-group">
                             {% for client in clients %}
                                 <li class="list-group-item">
+                                    Redirect uris:
+                                    {% for uri in client.redirectUri %}
+                                        <strong>{{ uri }}</strong><br/>
+                                    {% endfor %}
+                                    Client scopes: <strong>{{ client.scopes }}</strong> <br/>
                                     Client uuid: <strong>{{ client.Uuid.asString }}</strong> <br/>
                                     Client id: <strong>{{ client.clientId }}</strong> <br/>
                                     Client secret: <strong>{{ client.secret }}</strong><br/>

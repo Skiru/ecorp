@@ -1,13 +1,15 @@
 FROM php:7.4-fpm
 
 RUN apt-get update && apt-get install -y libpq-dev git unzip zlib1g-dev libzip-dev libjpeg62-turbo-dev libmcrypt-dev libpng-dev libonig-dev
-RUN docker-php-ext-install pdo pdo_pgsql zip bcmath
+RUN docker-php-ext-install pdo pdo_pgsql zip bcmath opcache
+RUN docker-php-ext-enable pdo pdo_pgsql zip bcmath opcache
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 COPY ./composer.json ./
 COPY ./composer.lock ./
+COPY ./docker/php/php.ini /usr/local/etc/php/php.ini
 
-RUN composer install --no-dev --no-scripts --ignore-platform-reqs
+RUN composer install --no-dev --no-scripts --ignore-platform-reqs --optimize-autoloader
 
 RUN  mkdir -p /var/www/html/var/log/
 COPY ./ /var/www/html

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace ECorp\UI\Frontend;
 
+use ECorp\Application\Query\Client\ClientQueryInterface;
 use ECorp\Application\Query\User\UserQueryInterface;
 use ECorp\Application\User\Command\UserRegisterCommand;
 use ECorp\Application\User\Command\UserRegisterException;
@@ -15,8 +16,13 @@ use ECorp\DomainModel\User\User;
 use ECorp\DomainModel\User\Username;
 use ECorp\DomainModel\Uuid as DomainUuid;
 use ECorp\Infrastructure\CommandBus\CommandBusInterface;
+use ECorp\Infrastructure\Form\IdpClient\IdpClientModel;
+use ECorp\Infrastructure\Form\IdpClient\IdpClientType;
 use ECorp\Infrastructure\Form\User\UserFormModel;
 use ECorp\Infrastructure\Form\User\UserType;
+use ECorp\Infrastructure\Idp\ClientHandler;
+use ECorp\Infrastructure\Security\User\PurpleCloudsUser;
+use FOS\OAuthServerBundle\Model\ClientManagerInterface;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -30,10 +36,19 @@ class IdpController extends AbstractController
 
     private UserQueryInterface $userQuery;
 
-    public function __construct(CommandBusInterface $commandBus, UserQueryInterface $userQuery)
+    private ClientManagerInterface $clientManager;
+
+    private ClientHandler $clientHandler;
+
+    private ClientQueryInterface $clientQuery;
+
+    public function __construct(CommandBusInterface $commandBus, UserQueryInterface $userQuery, ClientManagerInterface $clientManager, ClientHandler $clientHandler, ClientQueryInterface $clientQuery)
     {
         $this->commandBus = $commandBus;
         $this->userQuery = $userQuery;
+        $this->clientManager = $clientManager;
+        $this->clientHandler = $clientHandler;
+        $this->clientQuery = $clientQuery;
     }
 
     public function login(AuthenticationUtils $authenticationUtils): Response
@@ -88,11 +103,40 @@ class IdpController extends AbstractController
         ]);
     }
 
+    /**
+     * @return Response
+     */
     public function profile(): Response
     {
+        $idpClientModel = new IdpClientModel();
+        $clientCreateForm = $this->createForm(IdpClientType::class, $idpClientModel);
+        $clients = $this->clientQuery->getAll();
+
         return $this->render('admin/profile.html.twig', [
-            'user' => $this->getUser()
+            'user' => $this->getUser(),
+            'idp_client_form' => $clientCreateForm->createView(),
+            'clients' => $clients
         ]);
+    }
+
+    public function createIdpClient(Request $request): Response
+    {
+        $idpClientModel = new IdpClientModel();
+        $clientCreateForm = $this->createForm(IdpClientType::class, $idpClientModel);
+        $clientCreateForm->handleRequest($request);
+
+        if ($clientCreateForm->isSubmitted() && $clientCreateForm->isValid()) {
+            $client = $this->clientManager->createClient();
+            $client->setRedirectUris([$idpClientModel->redirectUri]);
+            $client->setAllowedGrantTypes([$idpClientModel->grantType]);
+            /** @var PurpleCloudsUser $user */
+            $user = $this->getUser();
+            $client->setUuid(Uuid::uuid4());
+            $client->setScopes('profile');
+            $this->clientManager->updateClient($client);
+        }
+
+        return $this->redirectToRoute('idp_profile');
     }
 
     /**

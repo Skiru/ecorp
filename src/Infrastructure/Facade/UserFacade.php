@@ -37,7 +37,7 @@ class UserFacade
             Uuid::fromString($userView->getUuid()),
             $userView->getEmail(),
             $userView->getRoles(),
-            'token'
+            serialize($userView)
         );
     }
 

@@ -12,13 +12,6 @@ use Ramsey\Uuid\UuidInterface;
 class AuthCode extends BaseAuthCode
 {
     /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue
-     */
-    protected $id;
-
-    /**
      * @var UuidInterface
      *
      * @ORM\Column(type="uuid", unique=true)
@@ -26,6 +19,13 @@ class AuthCode extends BaseAuthCode
      * @ORM\CustomIdGenerator(class="Ramsey\Uuid\Doctrine\UuidGenerator")
      */
     protected $uuid;
+
+    /**
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue
+     */
+    protected $id;
 
     /**
      * @ORM\ManyToOne(targetEntity="Client")
@@ -38,4 +38,12 @@ class AuthCode extends BaseAuthCode
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $user;
+
+    /**
+     * @param UuidInterface $uuid
+     */
+    public function setUuid(UuidInterface $uuid): void
+    {
+        $this->uuid = $uuid->toString();
+    }
 }

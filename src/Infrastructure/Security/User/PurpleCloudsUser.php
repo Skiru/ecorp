@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace ECorp\Infrastructure\Security\User;
 
+use ECorp\Application\Query\User\SecurityUserDataView;
+use ECorp\Infrastructure\Persistence\Idp\Entity\User;
 use Ramsey\Uuid\UuidInterface;
 
 final class PurpleCloudsUser implements ECorpIdpUserInterface
@@ -58,5 +60,22 @@ final class PurpleCloudsUser implements ECorpIdpUserInterface
 
     public function eraseCredentials(): void
     {
+    }
+
+    public function getUser()
+    {
+        /** @var SecurityUserDataView $userData */
+        $userData = unserialize($this->rawToken);
+
+        return User::buildFromParams(
+            $userData->getUuid(),
+            $userData->getId(),
+            $userData->getUsername(),
+            $userData->getEmail(),
+            $userData->getPassword(),
+            $userData->getAge(),
+            $userData->getAvatarUri(),
+            $userData->getRoles(),
+        );
     }
 }

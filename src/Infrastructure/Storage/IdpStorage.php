@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace ECorp\Infrastructure\Storage;
 
+use ECorp\Infrastructure\Security\User\ECorpUserProviderInterface;
 use ECorp\Infrastructure\Security\User\PurpleCloudsUser;
 use FOS\OAuthServerBundle\Model\AccessTokenManagerInterface;
 use FOS\OAuthServerBundle\Model\AuthCodeManagerInterface;
@@ -40,7 +41,7 @@ class IdpStorage extends OAuthStorage
     protected $authCodeManager;
 
     /**
-     * @var UserProviderInterface
+     * @var ECorpUserProviderInterface
      */
     protected $userProvider;
 
@@ -59,12 +60,12 @@ class IdpStorage extends OAuthStorage
      * @param AccessTokenManagerInterface $accessTokenManager
      * @param RefreshTokenManagerInterface $refreshTokenManager
      * @param AuthCodeManagerInterface $authCodeManager
-     * @param null|UserProviderInterface $userProvider
+     * @param null|ECorpUserProviderInterface $userProvider
      * @param null|EncoderFactoryInterface $encoderFactory
      */
     public function __construct(ClientManagerInterface $clientManager, AccessTokenManagerInterface $accessTokenManager,
                                 RefreshTokenManagerInterface $refreshTokenManager, AuthCodeManagerInterface $authCodeManager,
-                                UserProviderInterface $userProvider, EncoderFactoryInterface $encoderFactory = null)
+                                ECorpUserProviderInterface $userProvider, EncoderFactoryInterface $encoderFactory = null)
     {
         $this->clientManager = $clientManager;
         $this->accessTokenManager = $accessTokenManager;
@@ -93,8 +94,53 @@ class IdpStorage extends OAuthStorage
         $authCode->setExpiresAt($expires);
         $authCode->setScope($scope);
         $authCode->setUuid(Uuid::uuid4());
+
         $this->authCodeManager->updateAuthCode($authCode);
 
         return $authCode;
+    }
+
+    public function createAccessToken($tokenString, IOAuth2Client $client, $data, $expires, $scope = null)
+    {
+        if (!$client instanceof ClientInterface) {
+            throw new \InvalidArgumentException('Client has to implement the ClientInterface');
+        }
+
+        $token = $this->accessTokenManager->createToken();
+        $token->setToken($tokenString);
+        $token->setClient($client);
+        $token->setExpiresAt($expires);
+        $token->setScope($scope);
+        $token->setUuid(Uuid::uuid4());
+
+        if (null !== $data) {
+            $token->setUser($this->userProvider->loadUserById($data->getId()));
+        }
+
+        $this->accessTokenManager->updateToken($token);
+
+        return $token;
+    }
+
+    public function createRefreshToken($tokenString, IOAuth2Client $client, $data, $expires, $scope = null)
+    {
+        if (!$client instanceof ClientInterface) {
+            throw new \InvalidArgumentException('Client has to implement the ClientInterface');
+        }
+
+        $token = $this->refreshTokenManager->createToken();
+        $token->setToken($tokenString);
+        $token->setClient($client);
+        $token->setExpiresAt($expires);
+        $token->setScope($scope);
+        $token->setUuid(Uuid::uuid4());
+
+        if (null !== $data) {
+            $token->setUser($data);
+        }
+
+        $this->refreshTokenManager->updateToken($token);
+
+        return $token;
     }
 }

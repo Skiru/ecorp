@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace ECorp\Infrastructure\Security\User;
 
-use Doctrine\ORM\EntityManagerInterface;
 use ECorp\Infrastructure\Persistence\Idp\Entity\User;
 use ECorp\Infrastructure\Persistence\Repository\UserDbRepository;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Core\User\UserProviderInterface;
 
-class IdpUserProvider implements UserProviderInterface
+class IdpUserProvider implements ECorpUserProviderInterface
 {
     private UserDbRepository $userRepository;
 
@@ -27,6 +25,11 @@ class IdpUserProvider implements UserProviderInterface
     public function refreshUser(UserInterface $user)
     {
         return $this->userRepository->findOneBy(['username' => $user->getUsername()]);
+    }
+
+    public function loadUserById(int $id): UserInterface
+    {
+        return $this->userRepository->findOneBy(['id' => $id]);
     }
 
     public function supportsClass($class)

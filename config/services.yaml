@@ -13,7 +13,7 @@ fos_oauth_server:
         options:
             access_token_lifetime: 86400
             refresh_token_lifetime: 1209600
-            auth_code_lifetime: 30
+            auth_code_lifetime: 3600
             supported_scopes: profile
 
 services:

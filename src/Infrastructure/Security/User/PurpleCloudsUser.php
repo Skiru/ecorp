@@ -7,7 +7,7 @@ namespace ECorp\Infrastructure\Security\User;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-final class PurpleCloudsUser implements ECorpIdpUserInterface
+final class PurpleCloudsUser implements ECorpUserIdentityInterface
 {
     private UuidInterface $userUuid;
     private string $userName;

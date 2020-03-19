@@ -20,7 +20,6 @@ use ECorp\Infrastructure\Form\IdpClient\IdpClientModel;
 use ECorp\Infrastructure\Form\IdpClient\IdpClientType;
 use ECorp\Infrastructure\Form\User\UserFormModel;
 use ECorp\Infrastructure\Form\User\UserType;
-use ECorp\Infrastructure\Idp\ClientHandler;
 use ECorp\Infrastructure\Security\User\PurpleCloudsUser;
 use FOS\OAuthServerBundle\Model\ClientManagerInterface;
 use Ramsey\Uuid\Uuid;
@@ -38,16 +37,13 @@ class IdpController extends AbstractController
 
     private ClientManagerInterface $clientManager;
 
-    private ClientHandler $clientHandler;
-
     private ClientQueryInterface $clientQuery;
 
-    public function __construct(CommandBusInterface $commandBus, UserQueryInterface $userQuery, ClientManagerInterface $clientManager, ClientHandler $clientHandler, ClientQueryInterface $clientQuery)
+    public function __construct(CommandBusInterface $commandBus, UserQueryInterface $userQuery, ClientManagerInterface $clientManager, ClientQueryInterface $clientQuery)
     {
         $this->commandBus = $commandBus;
         $this->userQuery = $userQuery;
         $this->clientManager = $clientManager;
-        $this->clientHandler = $clientHandler;
         $this->clientQuery = $clientQuery;
     }
 

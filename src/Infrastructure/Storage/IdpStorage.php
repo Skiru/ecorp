@@ -11,6 +11,7 @@ use FOS\OAuthServerBundle\Model\ClientInterface;
 use FOS\OAuthServerBundle\Model\ClientManagerInterface;
 use FOS\OAuthServerBundle\Model\RefreshTokenManagerInterface;
 use FOS\OAuthServerBundle\Storage\OAuthStorage;
+use InvalidArgumentException;
 use OAuth2\Model\IOAuth2Client;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
@@ -78,7 +79,7 @@ class IdpStorage extends OAuthStorage
     public function createAuthCode($code, IOAuth2Client $client, $data, $redirect_uri, $expires, $scope = null)
     {
         if (!$client instanceof ClientInterface) {
-            throw new \InvalidArgumentException('Client has to implement the ClientInterface');
+            throw new InvalidArgumentException('Client has to implement the ClientInterface');
         }
 
         $authCode = $this->authCodeManager->createAuthCode();

@@ -35,9 +35,11 @@ class UserFacade
     {
         return new PurpleCloudsUser(
             Uuid::fromString($userView->getUuid()),
+            $userView->getUsername(),
             $userView->getEmail(),
-            $userView->getRoles(),
-            serialize($userView)
+            $userView->getAge(),
+            $userView->getAvatarUri(),
+            $userView->getRoles()
         );
     }
 

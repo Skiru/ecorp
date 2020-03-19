@@ -4,11 +4,15 @@ namespace ECorp\Infrastructure\Persistence\Idp\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use FOS\OAuthServerBundle\Entity\AccessToken as BaseAccessToken;
-use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
 /**
  * @ORM\Entity
+ * @ORM\AttributeOverrides({
+ *      @ORM\AttributeOverride(name="token",
+ *          column=@ORM\Column(name="token", type="string", length=4096)
+ *      )
+ * })
  */
 class AccessToken extends BaseAccessToken
 {

@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace ECorp\Infrastructure\Storage;
 
+use DateTimeImmutable;
 use ECorp\Infrastructure\Security\User\ECorpUserProviderInterface;
 use ECorp\Infrastructure\Security\User\PurpleCloudsUser;
+use Firebase\JWT\JWT;
 use FOS\OAuthServerBundle\Model\AccessTokenManagerInterface;
 use FOS\OAuthServerBundle\Model\AuthCodeManagerInterface;
 use FOS\OAuthServerBundle\Model\ClientInterface;
@@ -16,7 +18,6 @@ use InvalidArgumentException;
 use OAuth2\Model\IOAuth2Client;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
-use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 class IdpStorage extends OAuthStorage
 {
@@ -63,10 +64,14 @@ class IdpStorage extends OAuthStorage
      * @param null|ECorpUserProviderInterface $userProvider
      * @param null|EncoderFactoryInterface $encoderFactory
      */
-    public function __construct(ClientManagerInterface $clientManager, AccessTokenManagerInterface $accessTokenManager,
-                                RefreshTokenManagerInterface $refreshTokenManager, AuthCodeManagerInterface $authCodeManager,
-                                ECorpUserProviderInterface $userProvider, EncoderFactoryInterface $encoderFactory = null)
-    {
+    public function __construct(
+        ClientManagerInterface $clientManager,
+        AccessTokenManagerInterface $accessTokenManager,
+        RefreshTokenManagerInterface $refreshTokenManager,
+        AuthCodeManagerInterface $authCodeManager,
+        ECorpUserProviderInterface $userProvider,
+        EncoderFactoryInterface $encoderFactory = null
+    ) {
         $this->clientManager = $clientManager;
         $this->accessTokenManager = $accessTokenManager;
         $this->refreshTokenManager = $refreshTokenManager;
@@ -103,7 +108,7 @@ class IdpStorage extends OAuthStorage
     public function createAccessToken($tokenString, IOAuth2Client $client, $data, $expires, $scope = null)
     {
         if (!$client instanceof ClientInterface) {
-            throw new \InvalidArgumentException('Client has to implement the ClientInterface');
+            throw new InvalidArgumentException('Client has to implement the ClientInterface');
         }
 
         $token = $this->accessTokenManager->createToken();
@@ -125,7 +130,7 @@ class IdpStorage extends OAuthStorage
     public function createRefreshToken($tokenString, IOAuth2Client $client, $data, $expires, $scope = null)
     {
         if (!$client instanceof ClientInterface) {
-            throw new \InvalidArgumentException('Client has to implement the ClientInterface');
+            throw new InvalidArgumentException('Client has to implement the ClientInterface');
         }
 
         $token = $this->refreshTokenManager->createToken();
@@ -142,5 +147,11 @@ class IdpStorage extends OAuthStorage
         $this->refreshTokenManager->updateToken($token);
 
         return $token;
+    }
+
+    protected function genAccessToken()
+    {
+        var_dump('tutaj!!!');
+        die();
     }
 }

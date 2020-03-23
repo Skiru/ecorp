@@ -8,4 +8,5 @@ class IdpClientModel
 {
     public $redirectUri;
     public $grantType;
+    public $name;
 }

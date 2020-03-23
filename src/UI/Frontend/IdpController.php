@@ -131,6 +131,7 @@ class IdpController extends AbstractController
             $user = $this->getUser();
             $client->setUuid(Uuid::uuid4());
             $client->setScopes('profile');
+            $client->setName($idpClientModel->name);
             $this->clientManager->updateClient($client);
         }
 

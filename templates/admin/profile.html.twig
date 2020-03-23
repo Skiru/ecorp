@@ -89,6 +89,7 @@
                     <div class="col-xs-12 col-md-6">
                         {{ form_start(idp_client_form, {'attr': {'class':'form-signin'}, 'action': path('web_idp_create_client')}) }}
 
+                        {{ form_row(idp_client_form.name) }}
                         {{ form_row(idp_client_form.redirectUri) }}
                         {{ form_row(idp_client_form.grantType) }}
 

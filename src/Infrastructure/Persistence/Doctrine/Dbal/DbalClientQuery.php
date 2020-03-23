@@ -31,6 +31,7 @@ class DbalClientQuery extends AbstractQuery implements ClientQueryInterface
             $client['secret'],
             unserialize($client['redirect_uris']),
             unserialize($client['allowed_grant_types']),
+            $client['name']
         ), $clients);
     }
 }

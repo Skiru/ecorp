@@ -15,6 +15,7 @@ class IdpClientType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('name', TextType::class)
             ->add('redirectUri', TextType::class)
             ->add('grantType', ChoiceType::class, [
                 'choices' => ['authorization_code' => 'authorization_code', 'token' => 'token']

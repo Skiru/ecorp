@@ -149,9 +149,11 @@ class IdpStorage extends OAuthStorage
         return $token;
     }
 
-    protected function genAccessToken()
+    /**
+     * @return AuthCodeManagerInterface
+     */
+    public function getAuthCodeManager(): AuthCodeManagerInterface
     {
-        var_dump('tutaj!!!');
-        die();
+        return $this->authCodeManager;
     }
 }

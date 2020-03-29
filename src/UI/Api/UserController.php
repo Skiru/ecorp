@@ -10,6 +10,7 @@ use ECorp\Application\User\Command\UserRegisterException;
 use ECorp\DomainModel\Assert\AssertException;
 use ECorp\DomainModel\User\Age;
 use ECorp\DomainModel\User\Email;
+use ECorp\DomainModel\User\Password;
 use ECorp\DomainModel\User\User;
 use ECorp\DomainModel\User\Username;
 use ECorp\DomainModel\Uuid as DomainUuid;
@@ -55,10 +56,11 @@ class UserController extends AbstractController
 
         try {
             $user = new User(
+                new DomainUuid($uuid),
                 new Email($json['email']),
                 new Username($json['username']),
                 new Age($json['age']),
-                new DomainUuid($uuid)
+                new Password($json['password'])
             );
 
             $userRegisterCommand = new UserRegisterCommand($user);

@@ -9,25 +9,26 @@ use ECorp\Infrastructure\Storage\IdpStorage;
 use Firebase\JWT\JWT;
 use OAuth2\OAuth2;
 use Ramsey\Uuid\Uuid;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class ECorpOAuth2 extends OAuth2
 {
     private IdpStorage $idpStorage;
 
-    private Security $security;
+    private UserInterface $user;
 
-    public function __construct(IdpStorage $idpStorage, Security $security)
+    public function __construct(IdpStorage $idpStorage)
     {
         parent::__construct($idpStorage);
-        $this->security = $security;
+        $this->idpStorage = $idpStorage;
     }
 
     protected function genAccessToken(): string
     {
         $privateKey = file_get_contents('jwt.pem', true);
         $payload = [
-            "user" => $this->security->getUser()->getUserUuid(),
+            "user" => $this->user->getUuid(),
             "iss" => "ecorp.purpleclouds.pl",
             "aud" => "blog.purpleclouds.pl",
             "iat" => (new DateTimeImmutable())->getTimestamp(),
@@ -35,8 +36,18 @@ class ECorpOAuth2 extends OAuth2
             "jti" => Uuid::uuid4()
         ];
 
-        return JWT::encode($payload, $privateKey, 'HS256');
+       return JWT::encode($payload, $privateKey);
     }
 
+    protected function getAuthorizationHeader(Request $request)
+    {
+        $code = $request->get('code');
+        $authCode = $this->idpStorage->getAuthCodeManager()->findAuthCodeByToken($code);
+        $this->user = $authCode->getUser();
 
+        return array(
+            'PHP_AUTH_USER' => $request->server->get('PHP_AUTH_USER'),
+            'PHP_AUTH_PW' => $request->server->get('PHP_AUTH_PW'),
+        );
+    }
 }

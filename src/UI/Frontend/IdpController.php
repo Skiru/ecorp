@@ -47,6 +47,11 @@ class IdpController extends AbstractController
         $this->clientQuery = $clientQuery;
     }
 
+    public function homepage(): Response
+    {
+        return $this->render('idp/homepage.html.twig');
+    }
+
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
         $error = $authenticationUtils->getLastAuthenticationError();
@@ -136,15 +141,5 @@ class IdpController extends AbstractController
         }
 
         return $this->redirectToRoute('idp_profile');
-    }
-
-    /**
-     * @return JsonResponse
-     */
-    public function homepage(): JsonResponse
-    {
-        return new JsonResponse([
-            'Message' => 'purple clouds idp homepage'
-        ]);
     }
 }

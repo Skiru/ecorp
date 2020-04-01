@@ -1,5 +1,32 @@
 {% extends 'base.html.twig' %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('assets/css/cover.css') }}">
+{% endblock %}
+
 {% block body %}
-    IDP MAIN PAGE
+    <div class="cover-container d-flex h-100 p-3 mx-auto flex-column text-center">
+        <header class="masthead mb-auto">
+            <div class="inner">
+                <h3 class="masthead-brand">ECORP</h3>
+                <nav class="nav nav-masthead justify-content-center">
+                    <a class="nav-link active" href="#">About</a>
+                    <a class="nav-link" href="{{ path('web_login_user') }}">Login</a>
+                    <a class="nav-link" href="{{ path('web_register_user') }}">Register</a>
+                </nav>
+            </div>
+        </header>
+
+        <main role="main" class="inner cover">
+            <h1 class="cover-heading">Create your identity</h1>
+            <p class="lead">ECorp is an application which allows you to create your unique identity and use it in every PurpleClouds application. Your data are save with us!</p>
+            <img class="img-fluid img-thumbnail" src="{{ asset('assets/images/ecorp_cover.jpg') }}"/>
+        </main>
+
+        <footer class="mastfoot mt-auto">
+            <div class="inner">
+                <p>ECorp Identity Provider, by PurpleClouds.pl</p>
+            </div>
+        </footer>
+    </div>
 {% endblock %}

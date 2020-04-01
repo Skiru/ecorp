@@ -1,20 +1,18 @@
 <!doctype html>
 <html class="no-js" lang="pl">
-
 <head>
     <meta charset="utf-8">
     <title>{% block title %}ECORP - PurpleClouds IDP application{% endblock %}</title>
-    {% block stylesheets %}{% endblock %}
     <meta name="description" content="ECORP - PurpleClouds IDP application">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="{{ asset('assets/bootstrap/bootstrap-material-design.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/bootstrap/css/bootstrap-material-design.min.css') }}">
+    {% block stylesheets %}{% endblock %}
 </head>
 <body>
-
 {% block body %}{% endblock %}
+<script src="{{ asset('assets/bootstrap/jquery-3.4.1.min.js') }}"></script>
+<script src="{{ asset('assets/bootstrap/popper.js') }}"></script>
+<script src="{{ asset('assets/bootstrap/js/bootstrap-material-design.min.js') }}"></script>
 {% block javascripts %}{% endblock %}
-<script src="{{ asset('assets/bootstrap/bootstrap-material-design.min.js') }}" async></script>
-
 </body>
-
 </html>

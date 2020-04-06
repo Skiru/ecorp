@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace ECorp\Infrastructure\Security;
 
+use ECorp\Application\Query\Client\ClientQueryInterface;
 use ECorp\Application\Query\User\UserQueryInterface;
 use ECorp\Infrastructure\Facade\UserFacade;
 use ECorp\Infrastructure\Security\User\PurpleCloudsUser;
+use FOS\OAuthServerBundle\Entity\ClientManager;
+use FOS\OAuthServerBundle\Model\ClientManagerInterface;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,12 +38,8 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 
     private UserPasswordEncoderInterface $passwordEncoder;
 
-    public function __construct(
-        UserQueryInterface $userQuery,
-        RouterInterface $router,
-        CsrfTokenManagerInterface $csrfTokenManager,
-        UserPasswordEncoderInterface $passwordEncoder
-    ) {
+    public function __construct(UserQueryInterface $userQuery, RouterInterface $router, CsrfTokenManagerInterface $csrfTokenManager, UserPasswordEncoderInterface $passwordEncoder)
+    {
         $this->userQuery = $userQuery;
         $this->router = $router;
         $this->csrfTokenManager = $csrfTokenManager;

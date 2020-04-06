@@ -34,6 +34,7 @@ class UserFacade
     public static function toPurplecloudsUser(SecurityUserDataView $userView): PurpleCloudsUser
     {
         return new PurpleCloudsUser(
+            $userView->getId(),
             Uuid::fromString($userView->getUuid()),
             $userView->getUsername(),
             $userView->getEmail(),

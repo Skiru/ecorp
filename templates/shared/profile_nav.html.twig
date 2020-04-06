@@ -1,0 +1,37 @@
+<nav class="col-md-2 d-none d-md-block bg-light sidebar">
+    <div class="sidebar-sticky">
+        <a class="nav-link" href="{{ path('web_logout_user') }}">
+            Sign out <span data-feather="log-out"></span>
+        </a>
+        <div class="container">
+            <h3>{{ app.user.username }}</h3>
+        </div>
+
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('idp_profile') }}">
+                    <span data-feather="home"></span>
+                    Dashboard <span class="sr-only"></span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('idp_profile_user') }}">
+                    <span data-feather="user"></span>
+                    User <span class="sr-only"></span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('idp_profile_client') }}">
+                    <span data-feather="box"></span>
+                    Clients
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('idp_profile_granted_applications') }}">
+                    <span data-feather="check-square"></span>
+                    Granted applications
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>

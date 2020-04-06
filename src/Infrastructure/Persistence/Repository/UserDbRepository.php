@@ -10,6 +10,8 @@ use ECorp\DomainModel\User\UserRepositoryInterface;
 use ECorp\DomainModel\Uuid;
 use ECorp\Infrastructure\Facade\UserFacade;
 use ECorp\Infrastructure\Persistence\Idp\Entity\User as UserEntity;
+use Ramsey\Uuid\Uuid as RamseyUuid;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Throwable;
@@ -59,5 +61,11 @@ class UserDbRepository extends ServiceEntityRepository implements UserRepository
 
         $this->getEntityManager()->remove($entity);
         $this->getEntityManager()->flush();
+    }
+
+    public function getUser(RamseyUuid $uuid): UserEntity
+    {
+        //TODO throw exception
+        return $this->getEntityManager()->getRepository(UserEntity::class)->findOneBy(['uuid' => $uuid->toString()]);
     }
 }

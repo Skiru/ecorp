@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Purple clouds profile {% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('assets/css/dashboard.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="row">
+            {% include 'shared/profile_nav.html.twig' %}
+
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Clients</h1>
+                </div>
+                <h2>Registered IDP Client applications</h2>
+                <section class="justify-content-lg-start order-bottom my-4">
+                    <div class="col-xs-12">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th scope="col">redirect uris</th>
+                                    <th scope="col">scopes</th>
+                                    <th scope="col">uuid</th>
+                                    <th scope="col">public id</th>
+                                    <th scope="col">secret</th>
+                                </tr>
+                                </thead>
+
+                                <tbody>
+                                {% for client in clients %}
+                                    <tr>
+                                        {% for uri in client.redirectUri %}
+                                            <td><strong>{{ uri }}</strong></td>
+                                        {% endfor %}
+                                        <td><strong>{{ client.scopes }}</strong> </td>
+                                        <td><strong>{{ client.Uuid.asString }}</strong> </td>
+                                        <td><strong>{{ client.clientId }}</strong> </td>
+                                        <td><strong>{{ client.secret }}</strong> </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+                <h2>Register new client</h2>
+                <section class="justify-content-lg-center order-bottom my-2">
+                    <div class="col-xs-12 col-md-6">
+                        {{ form_start(idp_client_form, {'attr': {'class':'form-signin'}, 'action': path('web_idp_create_client')}) }}
+
+                        {{ form_row(idp_client_form.name) }}
+                        {{ form_row(idp_client_form.redirectUri) }}
+                        {{ form_row(idp_client_form.grantType) }}
+
+                        <button class="btn btn-lg btn-primary btn-block" type="submit">Create client</button>
+                        {{ form_end(idp_client_form) }}
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+    {% block javascripts %}
+        <link rel="stylesheet" href="{{ asset('assets/js/dashboard.js') }}">
+    {% endblock %}
+{% endblock %}

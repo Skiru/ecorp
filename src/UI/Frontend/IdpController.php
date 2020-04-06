@@ -120,6 +120,30 @@ class IdpController extends AbstractController
         ]);
     }
 
+    public function user(): Response
+    {
+        return $this->render('admin/user.html.twig', [
+            'user' => $this->getUser()
+        ]);
+    }
+
+    public function client(): Response
+    {
+        $idpClientModel = new IdpClientModel();
+        $clientCreateForm = $this->createForm(IdpClientType::class, $idpClientModel);
+        $clients = $this->clientQuery->getAll();
+
+        return $this->render('admin/clients.html.twig', [
+            'idp_client_form' => $clientCreateForm->createView(),
+            'clients' => $clients
+        ]);
+    }
+
+    public function grantedApplications(): Response
+    {
+        return $this->render('admin/granted_applications.html.twig', []);
+    }
+
     public function createIdpClient(Request $request): Response
     {
         $idpClientModel = new IdpClientModel();
@@ -140,6 +164,6 @@ class IdpController extends AbstractController
             $this->clientManager->updateClient($client);
         }
 
-        return $this->redirectToRoute('idp_profile');
+        return $this->redirectToRoute('idp_profile_client');
     }
 }

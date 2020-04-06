@@ -22,6 +22,21 @@ idp_profile:
   controller: ECorp\UI\Frontend\IdpController:profile
   methods: ['GET', 'POST']
 
+idp_profile_client:
+  path: /profile/client
+  controller: ECorp\UI\Frontend\IdpController:client
+  methods: ['GET', 'POST']
+
+idp_profile_user:
+  path: /profile/user
+  controller: ECorp\UI\Frontend\IdpController:user
+  methods: ['GET']
+
+idp_profile_granted_applications:
+  path: /profile/applications
+  controller: ECorp\UI\Frontend\IdpController:grantedApplications
+  methods: ['GET', 'POST']
+
 get_user_by_uuid:
   path: /api/users/{uuid}
   controller: ECorp\UI\Api\UserController:getUserByUuid

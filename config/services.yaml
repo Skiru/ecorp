@@ -58,3 +58,8 @@ services:
         class: FOS\OAuthServerBundle\Controller\TokenController
         arguments:
             $server: '@ECorp\Infrastructure\Idp\ECorpOAuth2'
+
+    ECorp\Infrastructure\Idp\ECorpOAuth2EventListener:
+        tags:
+            - { name: kernel.event_listener, event: fos_oauth_server.pre_authorization_process, method: onPreAuthorizationProcess }
+            - { name: kernel.event_listener, event: fos_oauth_server.post_authorization_process, method: onPostAuthorizationProcess }

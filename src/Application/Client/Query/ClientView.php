@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace ECorp\Application\Query\Client;
+namespace ECorp\Application\Client\Query;
 
 use ECorp\DomainModel\Uuid;
 use JsonSerializable;
@@ -36,6 +36,7 @@ class ClientView implements JsonSerializable
      * @param string $secret
      * @param string[] $redirectUri
      * @param string[] $grantTypes
+     * @param string $name
      */
     public function __construct(
         Uuid $uuid,

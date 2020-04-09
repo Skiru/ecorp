@@ -2,7 +2,7 @@
 
 namespace ECorp\UI\Api;
 
-use ECorp\Application\Query\User\UserQueryInterface;
+use ECorp\Application\User\Query\UserQueryInterface;
 use ECorp\Application\User\Command\UserDeleteCommand;
 use ECorp\Application\User\Command\UserDeleteException;
 use ECorp\Application\User\Command\UserRegisterCommand;

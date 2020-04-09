@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace ECorp\Application\Query\User;
+namespace ECorp\Application\User\Query;
 
 class SecurityUserDataView extends UserView
 {

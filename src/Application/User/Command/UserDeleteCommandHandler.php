@@ -2,7 +2,7 @@
 
 namespace ECorp\Application\User\Command;
 
-use ECorp\Application\Query\User\UserQueryInterface;
+use ECorp\Application\User\Query\UserQueryInterface;
 use ECorp\DomainModel\User\UserRepositoryInterface;
 
 final class UserDeleteCommandHandler

@@ -4,19 +4,13 @@ declare(strict_types=1);
 
 namespace ECorp\Infrastructure\Security;
 
-use ECorp\Application\Query\Client\ClientQueryInterface;
-use ECorp\Application\Query\User\UserQueryInterface;
+use ECorp\Application\User\Query\UserQueryInterface;
 use ECorp\Infrastructure\Facade\UserFacade;
-use ECorp\Infrastructure\Security\User\PurpleCloudsUser;
-use FOS\OAuthServerBundle\Entity\ClientManager;
-use FOS\OAuthServerBundle\Model\ClientManagerInterface;
-use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 use Symfony\Component\Security\Core\Exception\InvalidCsrfTokenException;
 use Symfony\Component\Security\Core\Security;

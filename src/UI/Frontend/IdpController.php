@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace ECorp\UI\Frontend;
 
-use ECorp\Application\Query\Client\ClientQueryInterface;
-use ECorp\Application\Query\User\UserQueryInterface;
+use ECorp\Application\Client\Query\GrantedClientQueryInterface;
+use ECorp\Application\Client\Query\ClientQueryInterface;
+use ECorp\Application\User\Query\UserQueryInterface;
 use ECorp\Application\User\Command\UserRegisterCommand;
 use ECorp\Application\User\Command\UserRegisterException;
 use ECorp\DomainModel\Assert\AssertException;
@@ -24,7 +25,6 @@ use ECorp\Infrastructure\Security\User\PurpleCloudsUser;
 use FOS\OAuthServerBundle\Model\ClientManagerInterface;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
@@ -39,12 +39,20 @@ class IdpController extends AbstractController
 
     private ClientQueryInterface $clientQuery;
 
-    public function __construct(CommandBusInterface $commandBus, UserQueryInterface $userQuery, ClientManagerInterface $clientManager, ClientQueryInterface $clientQuery)
-    {
+    private GrantedClientQueryInterface $grantedClientQuery;
+
+    public function __construct(
+        CommandBusInterface $commandBus,
+        UserQueryInterface $userQuery,
+        ClientManagerInterface $clientManager,
+        ClientQueryInterface $clientQuery,
+        GrantedClientQueryInterface $grantedClientQuery
+    ) {
         $this->commandBus = $commandBus;
         $this->userQuery = $userQuery;
         $this->clientManager = $clientManager;
         $this->clientQuery = $clientQuery;
+        $this->grantedClientQuery = $grantedClientQuery;
     }
 
     public function homepage(): Response
@@ -141,7 +149,11 @@ class IdpController extends AbstractController
 
     public function grantedApplications(): Response
     {
-        return $this->render('admin/granted_applications.html.twig', []);
+        $grantedClients = $this->grantedClientQuery->getAll();
+
+        return $this->render('admin/granted_applications.html.twig', [
+            'granted_clients' => $grantedClients
+        ]);
     }
 
     public function createIdpClient(Request $request): Response

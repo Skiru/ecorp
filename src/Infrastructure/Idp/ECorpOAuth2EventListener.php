@@ -6,7 +6,7 @@ namespace ECorp\Infrastructure\Idp;
 
 use DateTimeImmutable;
 use ECorp\Infrastructure\Persistence\Doctrine\Dbal\GrantedClientQuery;
-use ECorp\Application\Query\User\UserQueryInterface;
+use ECorp\Application\User\Query\UserQueryInterface;
 use ECorp\Infrastructure\Facade\UserFacade;
 use ECorp\Infrastructure\Persistence\Idp\Entity\RegisteredClient;
 use ECorp\Infrastructure\Persistence\Repository\RegisteredClientRepository;

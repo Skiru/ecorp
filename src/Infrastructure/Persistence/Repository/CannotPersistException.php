@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure\Persistence\Repository;
+namespace ECorp\Infrastructure\Persistence\Repository;
 
-use App\Infrastructure\InfrastructureException;
+use ECorp\Infrastructure\InfrastructureException;
 
 class CannotPersistException extends InfrastructureException
 {

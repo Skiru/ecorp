@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace ECorp\Infrastructure\Persistence\Repository;
 
-use App\Infrastructure\Persistence\Repository\CannotPersistException;
+use ECorp\Infrastructure\Persistence\Repository\CannotPersistException;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;

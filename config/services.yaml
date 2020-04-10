@@ -13,8 +13,10 @@ fos_oauth_server:
         options:
             access_token_lifetime: 86400
             refresh_token_lifetime: 1209600
-            auth_code_lifetime: 30
+            auth_code_lifetime: 3600
             supported_scopes: profile
+    template:
+        engine: twig
 
 services:
     # default configuration for services in *this* file
@@ -50,3 +52,14 @@ services:
     ECorp\Infrastructure\Storage\IdpStorage:
         arguments:
             $userProvider: '@ECorp\Infrastructure\Security\User\IdpUserProvider'
+
+    fos_oauth_server.controller.token:
+        public: true
+        class: FOS\OAuthServerBundle\Controller\TokenController
+        arguments:
+            $server: '@ECorp\Infrastructure\Idp\ECorpOAuth2'
+
+    ECorp\Infrastructure\Idp\ECorpOAuth2EventListener:
+        tags:
+            - { name: kernel.event_listener, event: fos_oauth_server.pre_authorization_process, method: onPreAuthorizationProcess }
+            - { name: kernel.event_listener, event: fos_oauth_server.post_authorization_process, method: onPostAuthorizationProcess }

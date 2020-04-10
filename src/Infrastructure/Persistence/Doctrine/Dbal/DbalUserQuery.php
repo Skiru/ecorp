@@ -3,9 +3,9 @@
 namespace ECorp\Infrastructure\Persistence\Doctrine\Dbal;
 
 use Doctrine\DBAL\DBALException;
-use ECorp\Application\Query\User\SecurityUserDataView;
-use ECorp\Application\Query\User\UserQueryInterface;
-use ECorp\Application\Query\User\UserView;
+use ECorp\Application\User\Query\SecurityUserDataView;
+use ECorp\Application\User\Query\UserQueryInterface;
+use ECorp\Application\User\Query\UserView;
 use ECorp\Infrastructure\Persistence\Doctrine\AbstractQuery;
 
 class DbalUserQuery extends AbstractQuery implements UserQueryInterface

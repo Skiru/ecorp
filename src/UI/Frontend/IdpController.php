@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace ECorp\UI\Frontend;
 
-use ECorp\Application\Query\Client\ClientQueryInterface;
-use ECorp\Application\Query\User\UserQueryInterface;
+use ECorp\Application\Client\Query\GrantedClientQueryInterface;
+use ECorp\Application\Client\Query\ClientQueryInterface;
+use ECorp\Application\User\Query\UserQueryInterface;
 use ECorp\Application\User\Command\UserRegisterCommand;
 use ECorp\Application\User\Command\UserRegisterException;
 use ECorp\DomainModel\Assert\AssertException;
@@ -20,12 +21,10 @@ use ECorp\Infrastructure\Form\IdpClient\IdpClientModel;
 use ECorp\Infrastructure\Form\IdpClient\IdpClientType;
 use ECorp\Infrastructure\Form\User\UserFormModel;
 use ECorp\Infrastructure\Form\User\UserType;
-use ECorp\Infrastructure\Idp\ClientHandler;
 use ECorp\Infrastructure\Security\User\PurpleCloudsUser;
 use FOS\OAuthServerBundle\Model\ClientManagerInterface;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
@@ -38,17 +37,27 @@ class IdpController extends AbstractController
 
     private ClientManagerInterface $clientManager;
 
-    private ClientHandler $clientHandler;
-
     private ClientQueryInterface $clientQuery;
 
-    public function __construct(CommandBusInterface $commandBus, UserQueryInterface $userQuery, ClientManagerInterface $clientManager, ClientHandler $clientHandler, ClientQueryInterface $clientQuery)
-    {
+    private GrantedClientQueryInterface $grantedClientQuery;
+
+    public function __construct(
+        CommandBusInterface $commandBus,
+        UserQueryInterface $userQuery,
+        ClientManagerInterface $clientManager,
+        ClientQueryInterface $clientQuery,
+        GrantedClientQueryInterface $grantedClientQuery
+    ) {
         $this->commandBus = $commandBus;
         $this->userQuery = $userQuery;
         $this->clientManager = $clientManager;
-        $this->clientHandler = $clientHandler;
         $this->clientQuery = $clientQuery;
+        $this->grantedClientQuery = $grantedClientQuery;
+    }
+
+    public function homepage(): Response
+    {
+        return $this->render('idp/homepage.html.twig');
     }
 
     public function login(AuthenticationUtils $authenticationUtils): Response
@@ -119,6 +128,34 @@ class IdpController extends AbstractController
         ]);
     }
 
+    public function user(): Response
+    {
+        return $this->render('admin/user.html.twig', [
+            'user' => $this->getUser()
+        ]);
+    }
+
+    public function client(): Response
+    {
+        $idpClientModel = new IdpClientModel();
+        $clientCreateForm = $this->createForm(IdpClientType::class, $idpClientModel);
+        $clients = $this->clientQuery->getAll();
+
+        return $this->render('admin/clients.html.twig', [
+            'idp_client_form' => $clientCreateForm->createView(),
+            'clients' => $clients
+        ]);
+    }
+
+    public function grantedApplications(): Response
+    {
+        $grantedClients = $this->grantedClientQuery->getAll();
+
+        return $this->render('admin/granted_applications.html.twig', [
+            'granted_clients' => $grantedClients
+        ]);
+    }
+
     public function createIdpClient(Request $request): Response
     {
         $idpClientModel = new IdpClientModel();
@@ -126,6 +163,8 @@ class IdpController extends AbstractController
         $clientCreateForm->handleRequest($request);
 
         if ($clientCreateForm->isSubmitted() && $clientCreateForm->isValid()) {
+            //TODO add here command construction
+
             $client = $this->clientManager->createClient();
             $client->setRedirectUris([$idpClientModel->redirectUri]);
             $client->setAllowedGrantTypes([$idpClientModel->grantType]);
@@ -133,19 +172,10 @@ class IdpController extends AbstractController
             $user = $this->getUser();
             $client->setUuid(Uuid::uuid4());
             $client->setScopes('profile');
+            $client->setName($idpClientModel->name);
             $this->clientManager->updateClient($client);
         }
 
-        return $this->redirectToRoute('idp_profile');
-    }
-
-    /**
-     * @return JsonResponse
-     */
-    public function homepage(): JsonResponse
-    {
-        return new JsonResponse([
-            'Message' => 'purple clouds idp homepage'
-        ]);
+        return $this->redirectToRoute('idp_profile_client');
     }
 }

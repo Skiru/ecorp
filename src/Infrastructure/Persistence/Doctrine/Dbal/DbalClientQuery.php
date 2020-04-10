@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace ECorp\Infrastructure\Persistence\Doctrine\Dbal;
 
-use ECorp\Application\Query\Client\ClientQueryInterface;
-use ECorp\Application\Query\Client\ClientView;
+use ECorp\Application\Client\Query\ClientQueryInterface;
+use ECorp\Application\Client\Query\ClientView;
 use ECorp\DomainModel\Uuid;
 use ECorp\Infrastructure\Persistence\Doctrine\AbstractQuery;
 
@@ -31,6 +31,7 @@ class DbalClientQuery extends AbstractQuery implements ClientQueryInterface
             $client['secret'],
             unserialize($client['redirect_uris']),
             unserialize($client['allowed_grant_types']),
+            $client['name']
         ), $clients);
     }
 }

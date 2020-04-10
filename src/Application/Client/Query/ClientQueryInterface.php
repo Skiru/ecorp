@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace ECorp\Application\Query\Client;
+namespace ECorp\Application\Client\Query;
 
 interface ClientQueryInterface
 {

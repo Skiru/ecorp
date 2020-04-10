@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ECorp\DomainModel;
 
 use ECorp\DomainModel\Assert\AssertException;
@@ -7,10 +9,7 @@ use ECorp\DomainModel\Assert\ECorpAssert;
 
 final class Uuid
 {
-    /**
-     * @var string
-     */
-    private $string;
+    private string $string;
 
     /**
      * Uuid constructor.
@@ -25,9 +24,6 @@ final class Uuid
         $this->string = $uuid;
     }
 
-    /**
-     * @return string
-     */
     public function asString(): string
     {
         return $this->string;

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace ECorp\Infrastructure\Facade;
 
-use ECorp\Application\Query\User\SecurityUserDataView;
+use ECorp\Application\User\Query\SecurityUserDataView;
 use ECorp\DomainModel\User\User;
 use ECorp\Infrastructure\Persistence\Idp\Entity\User as UserEntity;
 use ECorp\Infrastructure\Security\User\PurpleCloudsUser;
@@ -34,10 +34,13 @@ class UserFacade
     public static function toPurplecloudsUser(SecurityUserDataView $userView): PurpleCloudsUser
     {
         return new PurpleCloudsUser(
+            $userView->getId(),
             Uuid::fromString($userView->getUuid()),
+            $userView->getUsername(),
             $userView->getEmail(),
-            $userView->getRoles(),
-            serialize($userView)
+            $userView->getAge(),
+            $userView->getAvatarUri(),
+            $userView->getRoles()
         );
     }
 

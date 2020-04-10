@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Purple clouds profile {% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('assets/css/dashboard.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="row">
+            {% include 'shared/profile_nav.html.twig' %}
+
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Granted applications</h1>
+                </div>
+                <section>
+                {% if granted_clients is not empty %}
+
+                    <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">uuid</th>
+                        <th scope="col">granted</th>
+                        <th scope="col">revoked</th>
+                        <th scope="col">grant date</th>
+                        <th scope="col">revoke date</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for client in granted_clients %}
+                        <tr>
+                            <th scope="row">{{ loop.index }}</th>
+                            <td>{{ client.uuid.asString }}</td>
+                            <td>{{ client.isGranted }}</td>
+                            <td>{{ client.isRevoked }}</td>
+                            <td>{{ client.grantDate|date('d-m-Y') }}</td>
+                            <td>{% if client.revokeDate is null %}
+                                    not specified
+                                {% else %}
+                                    {{ client.revokeDate|date('d-m-Y') }}
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                    </table>
+                {% else %}
+                    <p class="lead">You have not granted any application yet</p>
+                {% endif %}
+                </section>
+            </main>
+        </div>
+    </div>
+    {% block javascripts %}
+        <link rel="stylesheet" href="{{ asset('assets/js/dashboard.js') }}">
+    {% endblock %}
+{% endblock %}

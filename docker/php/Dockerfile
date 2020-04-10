@@ -15,6 +15,7 @@ RUN  mkdir -p /var/www/html/var/log/
 COPY ./ /var/www/html
 
 COPY ./.env.dist ./.env
+
 ENV APP_ENV=prod \
     APP_SECRET=ca6777ca3b9d07d5a38d4f68036f232d \
     KERNEL_CLASS=App\Kernel \

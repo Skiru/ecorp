@@ -36,10 +36,15 @@ class Client extends BaseClient
      */
     private $scopes;
 
+    /**
+     * @var string
+     * @ORM\Column(type="string", name="name")
+     */
+    private $name;
+
     public function __construct()
     {
         parent::__construct();
-        // your own logic
     }
 
     /**
@@ -56,5 +61,21 @@ class Client extends BaseClient
     public function setScopes(string $scopes): void
     {
         $this->scopes = $scopes;
+    }
+
+    /**
+     * @param string $name
+     */
+    public function setName(string $name): void
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
     }
 }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace ECorp\Application\Query\Client;
+namespace ECorp\Application\Client\Query;
 
 use ECorp\DomainModel\Uuid;
 use JsonSerializable;
@@ -16,6 +16,8 @@ class ClientView implements JsonSerializable
     private string $clientId;
 
     private string $secret;
+
+    private string $name;
 
     /**
      * @var string[]
@@ -34,6 +36,7 @@ class ClientView implements JsonSerializable
      * @param string $secret
      * @param string[] $redirectUri
      * @param string[] $grantTypes
+     * @param string $name
      */
     public function __construct(
         Uuid $uuid,
@@ -41,7 +44,8 @@ class ClientView implements JsonSerializable
         string $clientId,
         string $secret,
         array $redirectUri,
-        array $grantTypes
+        array $grantTypes,
+        string $name
     ) {
         $this->uuid = $uuid;
         $this->scopes = $scopes;
@@ -49,6 +53,7 @@ class ClientView implements JsonSerializable
         $this->secret = $secret;
         $this->redirectUri = $redirectUri;
         $this->grantTypes = $grantTypes;
+        $this->name = $name;
     }
 
     public function jsonSerialize(): array
@@ -59,7 +64,8 @@ class ClientView implements JsonSerializable
             'client_id' => $this->clientId,
             'client_secret' => $this->secret,
             'redirect_uri' => $this->redirectUri,
-            'grant_type' => $this->grantTypes
+            'grant_type' => $this->grantTypes,
+            'name' => $this->name
         ];
     }
 
@@ -109,5 +115,13 @@ class ClientView implements JsonSerializable
     public function getGrantTypes(): array
     {
         return $this->grantTypes;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
     }
 }

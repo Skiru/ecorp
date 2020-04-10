@@ -4,23 +4,33 @@ declare(strict_types=1);
 
 namespace ECorp\Infrastructure\Security\User;
 
-use ECorp\Application\Query\User\SecurityUserDataView;
-use ECorp\Infrastructure\Persistence\Idp\Entity\User;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
-final class PurpleCloudsUser implements ECorpIdpUserInterface
+final class PurpleCloudsUser implements ECorpUserIdentityInterface
 {
+    private int $internalId;
     private UuidInterface $userUuid;
+    private string $userName;
     private string $email;
+    private int $age;
+    private ?string $avatarUri;
     private array $roles;
-    private string $rawToken;
 
-    public function __construct(UuidInterface $userUuid, string $email, array $roles, string $rawToken)
+    public function __construct(int $internalId, UuidInterface $userUuid, string $userName, string $email, int $age, ?string $avatarUri, array $roles)
     {
+        $this->internalId = $internalId;
         $this->userUuid = $userUuid;
+        $this->userName = $userName;
         $this->email = $email;
+        $this->age = $age;
+        $this->avatarUri = $avatarUri;
         $this->roles = $roles;
-        $this->rawToken = $rawToken;
+    }
+
+    public function getInternalId(): int
+    {
+        return $this->internalId;
     }
 
     public function getUserUuid(): UuidInterface
@@ -33,27 +43,22 @@ final class PurpleCloudsUser implements ECorpIdpUserInterface
         return $this->email;
     }
 
-    public function getRawToken(): string
+    public function getRoles(): array
     {
-        return $this->rawToken;
+        return $this->roles;
     }
 
-    public function getRoles()
-    {
-        return ['ROLE_USER'];
-    }
-
-    public function getPassword()
+    public function getPassword(): ?string
     {
         return null;
     }
 
-    public function getSalt()
+    public function getSalt(): ?string
     {
         return null;
     }
 
-    public function getUsername()
+    public function getUsername(): string
     {
         return $this->email;
     }
@@ -62,20 +67,8 @@ final class PurpleCloudsUser implements ECorpIdpUserInterface
     {
     }
 
-    public function getUser()
+    public function getUser(): UserInterface
     {
-        /** @var SecurityUserDataView $userData */
-        $userData = unserialize($this->rawToken);
-
-        return User::buildFromParams(
-            $userData->getUuid(),
-            $userData->getId(),
-            $userData->getUsername(),
-            $userData->getEmail(),
-            $userData->getPassword(),
-            $userData->getAge(),
-            $userData->getAvatarUri(),
-            $userData->getRoles(),
-        );
+        return $this;
     }
 }

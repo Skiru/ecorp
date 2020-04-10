@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace ECorp\Application\User\Command;
 
 use ECorp\Application\Event\AggregateRoot\AggregateRootRepositoryInterface;
-use ECorp\Application\Query\User\UserQueryInterface;
+use ECorp\Application\User\Query\UserQueryInterface;
 use ECorp\DomainModel\BusinessRequirementsConstants;
 use ECorp\DomainModel\User\UserRepositoryInterface;
 use ECorp\Infrastructure\Persistence\Repository\UserRepositoryException;

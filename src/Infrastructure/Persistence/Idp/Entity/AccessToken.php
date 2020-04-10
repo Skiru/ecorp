@@ -8,6 +8,11 @@ use Ramsey\Uuid\UuidInterface;
 
 /**
  * @ORM\Entity
+ * @ORM\AttributeOverrides({
+ *      @ORM\AttributeOverride(name="token",
+ *          column=@ORM\Column(name="token", type="string", length=4096)
+ *      )
+ * })
  */
 class AccessToken extends BaseAccessToken
 {
@@ -38,4 +43,12 @@ class AccessToken extends BaseAccessToken
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $user;
+
+    /**
+     * @param UuidInterface $uuid
+     */
+    public function setUuid(UuidInterface $uuid): void
+    {
+        $this->uuid = $uuid;
+    }
 }

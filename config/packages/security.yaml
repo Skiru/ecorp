@@ -10,7 +10,6 @@ security:
       algorithm: bcrypt
 
   firewalls:
-
     main:
       anonymous: ~
       logout:

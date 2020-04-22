@@ -12,4 +12,10 @@ final class BusinessRequirementsConstants
     const MIN_USERNAME_LENGTH = 2;
     const MAX_USERNAME_LENGTH = 20;
     const MAX_NUMBER_OF_COMPANY_USERS = 1000;
+    const ALLOWED_EMAIL_DOMAINS = [
+        'gmail.com',
+        'interia.pl',
+        'interia.eu',
+        'hotmail.com'
+    ];
 }

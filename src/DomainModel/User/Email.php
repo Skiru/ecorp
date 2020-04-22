@@ -25,9 +25,7 @@ final class Email
             throw new AssertException('Invalid email address.');
         }
         $domain = explode('@', $email)[1];
-
-        ECorpAssert::checkMicrosoftDomain($domain);
-        ECorpAssert::checkEcorpDomain($domain);
+        ECorpAssert::checkDomain($domain);
 
         $this->email = $email;
     }

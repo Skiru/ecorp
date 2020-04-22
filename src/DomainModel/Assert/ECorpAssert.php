@@ -125,4 +125,20 @@ final class ECorpAssert
             );
         }
     }
+
+    /**
+     * @param string $domain
+     * @throws AssertException
+     */
+    public static function checkDomain(string $domain): void
+    {
+        if (!in_array($domain, BusinessRequirementsConstants::ALLOWED_EMAIL_DOMAINS)) {
+            throw new AssertException(
+                sprintf(
+                    'Domain not allowed. Allowed domains %s'
+                    , implode(', ',BusinessRequirementsConstants::ALLOWED_EMAIL_DOMAINS)
+                )
+            );
+        }
+    }
 }

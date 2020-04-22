@@ -24,9 +24,11 @@ services:
     networks: ["default", "purple_clouds_network"]
 
   ecorp_purple_clouds_postgres:
-    image: postgres
+    image: postgres:10
     ports:
       - 5432:5432
+    volumes:
+    - ./docker/pgdata:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: mrrobot
       POSTGRES_PASSWORD: root

@@ -22,7 +22,9 @@ use Symfony\Component\Security\Guard\Authenticator\AbstractFormLoginAuthenticato
 
 class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 {
-    public const LOGIN_ROUTE_NAME = 'web_login_user';
+    private const LOGIN_ROUTE_NAME = 'web_login_user';
+    private const AUTHORIZE_ROUTE_NAME = 'fos_oauth_server_authorize';
+    private const IDP_PROFILE_PAGE_ROUTE_NAME = 'idp_profile';
 
     private UserQueryInterface $userQuery;
 
@@ -42,8 +44,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 
     public function supports(Request $request): bool
     {
-        return self::LOGIN_ROUTE_NAME === $request->attributes->get('_route')
-            && $request->isMethod('POST');
+        return self::LOGIN_ROUTE_NAME === $request->attributes->get('_route') && $request->isMethod('POST');
     }
 
     public function getCredentials(Request $request)
@@ -87,11 +88,25 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
-        return new RedirectResponse($this->router->generate('idp_profile'));
+        if (self::AUTHORIZE_ROUTE_NAME === $request->attributes->get('_route')) {
+            return new RedirectResponse($this->getAuthorizeUrl());
+        }
+
+        return new RedirectResponse($this->getIdpProfilePageUrl());
     }
 
-    protected function getLoginUrl()
+    protected function getLoginUrl(): string
     {
-        return $this->router->generate('web_login_user');
+        return $this->router->generate(self::LOGIN_ROUTE_NAME);
+    }
+
+    private function getAuthorizeUrl(): string
+    {
+        return $this->router->generate(self::AUTHORIZE_ROUTE_NAME);
+    }
+
+    private function getIdpProfilePageUrl(): string
+    {
+        return $this->router->generate(self::IDP_PROFILE_PAGE_ROUTE_NAME);
     }
 }

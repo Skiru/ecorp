@@ -8,7 +8,7 @@ services:
       - ecorp_purple_clouds_postgres
     volumes:
       - .:/var/www/html
-    networks: ["default", "purple_clouds_network"]
+    networks: ["purple_clouds_network_internal"]
 
   ecorp_purple_clouds_nginx:
     image: nginx:latest
@@ -21,19 +21,17 @@ services:
     volumes:
       - .:/var/www/html
       - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
-    networks: ["default", "purple_clouds_network"]
+    networks: ["purple_clouds_network_internal"]
 
   ecorp_purple_clouds_postgres:
-    image: postgres:10
+    image: postgres
     ports:
-      - 5432:5432
-    volumes:
-    - ./docker/pgdata:/var/lib/postgresql/data
+      - "5432:5432"
     environment:
       POSTGRES_USER: mrrobot
       POSTGRES_PASSWORD: root
       POSTGRES_DB: idp_purpleclouds
-    networks: ["default", "purple_clouds_network"]
+    networks: ["purple_clouds_network_internal"]
 
   ecorp_puruple_clouds_assets:
     image: nginx:latest
@@ -42,7 +40,7 @@ services:
     volumes:
       - ./public/assets:/static/assets
       - ./docker/assets/default.conf:/etc/nginx/conf.d/default.conf
-    networks: ["default", "purple_clouds_network"]
+    networks: ["purple_clouds_network_internal"]
 
 networks:
-  purple_clouds_network: {"external": {"name": "purple_clouds_network"}}
+  purple_clouds_network_internal: {"external": {"name": "purple_clouds_network_internal"}}

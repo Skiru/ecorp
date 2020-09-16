@@ -1,25 +1,27 @@
-FROM php:7.4-fpm
+FROM composer as composer-prod
+WORKDIR /app
+COPY /composer.json ./
+COPY /composer.lock ./
+RUN composer install --ignore-platform-reqs --optimize-autoloader --prefer-dist
 
-RUN apt-get update && apt-get install -y libpq-dev git unzip zlib1g-dev libzip-dev libjpeg62-turbo-dev libmcrypt-dev libpng-dev libonig-dev
-RUN docker-php-ext-install pdo pdo_pgsql zip bcmath opcache
-RUN docker-php-ext-enable pdo pdo_pgsql zip bcmath opcache
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-
-COPY ./.env.dist ./.env
+FROM php:7.4-fpm-alpine
+RUN apk add --no-cache \
+    $PHPIZE_DEPS \
+    sqlite-dev && \
+    docker-php-ext-install bcmath && \
+    docker-php-ext-enable bcmath && \
+    docker-php-ext-install pdo pdo_pgsql && \
+    docker-php-ext-enable pdo pdo_pgsql && \
+    docker-php-ext-install opcache && \
+    docker-php-ext-enable opcache && \
+    rm -rf /tmp/pear
 
 ENV APP_ENV=prod \
     APP_SECRET=ca6777ca3b9d07d5a38d4f68036f232d \
-    KERNEL_CLASS=ECorp\Kernel \
-    SYMFONY_DEPRECATIONS_HELPER=999999 \
     DATABASE_URL="pgsql://mrrobot:root@77.55.222.35:5432/idp_purpleclouds"
 
-COPY ./composer.json ./
-COPY ./composer.lock ./
-COPY ./docker/php/php.ini /usr/local/etc/php/php.ini
-
-RUN composer install --no-dev --no-scripts --ignore-platform-reqs --optimize-autoloader --prefer-dist
-
 RUN  mkdir -p /var/www/html/var/log/
+COPY ./docker/php/php.ini /etc/php7/conf.d/php.ini
 COPY ./ /var/www/html
-
+COPY --from=composer-prod /app/vendor /var/www/html/vendor
 RUN chmod 777 -R /var/www/html

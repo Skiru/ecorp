@@ -14,11 +14,6 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class UserFacade
 {
-    /**
-     * @param User $user
-     * @param UserPasswordEncoderInterface $passwordEncoder
-     * @return UserEntity
-     */
     public static function fromDomainUser(User $user, UserPasswordEncoderInterface $passwordEncoder): UserEntity
     {
         $userEntity = new UserEntity();

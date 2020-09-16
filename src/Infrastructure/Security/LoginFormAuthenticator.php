@@ -25,6 +25,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
     private const LOGIN_ROUTE_NAME = 'web_login_user';
     private const AUTHORIZE_ROUTE_NAME = 'fos_oauth_server_authorize';
     private const IDP_PROFILE_PAGE_ROUTE_NAME = 'idp_profile';
+    public const DESTINATION_KEY = 'destination';
 
     private UserQueryInterface $userQuery;
 
@@ -34,7 +35,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 
     private UserPasswordEncoderInterface $passwordEncoder;
 
-    public function __construct(UserQueryInterface $userQuery, RouterInterface $router, CsrfTokenManagerInterface $csrfTokenManager, UserPasswordEncoderInterface $passwordEncoder)
+    public function __construct(UserQueryInterface $userQuery, RouterInterface $router, CsrfTokenManagerInterface $csrfTokenManager, UserPasswordEncoderInterface $passwordEncoder, Security $security)
     {
         $this->userQuery = $userQuery;
         $this->router = $router;
@@ -44,6 +45,10 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 
     public function supports(Request $request): bool
     {
+        if (self::AUTHORIZE_ROUTE_NAME === $request->attributes->get('_route')) {
+            $request->getSession()->set(self::DESTINATION_KEY, $request->getRequestUri());
+        }
+
         return self::LOGIN_ROUTE_NAME === $request->attributes->get('_route') && $request->isMethod('POST');
     }
 
@@ -88,6 +93,10 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
+        if ($request->request->has('_target_path')) {
+            return new RedirectResponse($request->request->get('_target_path'));
+        }
+
         if (self::AUTHORIZE_ROUTE_NAME === $request->attributes->get('_route')) {
             return new RedirectResponse($this->getAuthorizeUrl());
         }
@@ -95,7 +104,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         return new RedirectResponse($this->getIdpProfilePageUrl());
     }
 
-    protected function getLoginUrl(): string
+    protected function getLoginUrl(array $params = []): string
     {
         return $this->router->generate(self::LOGIN_ROUTE_NAME);
     }

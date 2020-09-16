@@ -1,6 +1,6 @@
 FROM composer as composer-prod
 WORKDIR /app
-COPY / ./
+COPY ./ ./
 RUN composer install --no-interaction --prefer-dist --optimize-autoloader --no-progress --no-suggest
 
 FROM php:7.4-fpm-alpine

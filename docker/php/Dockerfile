@@ -1,13 +1,13 @@
 FROM composer as composer-prod
 WORKDIR /app
-COPY /composer.json ./
-COPY /composer.lock ./
-RUN composer install --ignore-platform-reqs --optimize-autoloader --prefer-dist
+COPY / ./
+RUN composer install --no-interaction --prefer-dist --optimize-autoloader --no-progress --no-suggest
 
 FROM php:7.4-fpm-alpine
+RUN set -ex
 RUN apk add --no-cache \
     $PHPIZE_DEPS \
-    sqlite-dev && \
+    postgresql-dev && \
     docker-php-ext-install bcmath && \
     docker-php-ext-enable bcmath && \
     docker-php-ext-install pdo pdo_pgsql && \

@@ -16,6 +16,5 @@ framework:
             resources:
                 - FrameworkBundle:Form
         cache: ~
-        engines:
-            - twig
+        engines: ['twig']
         loaders: []

@@ -93,7 +93,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
-        if ($request->request->has('_target_path')) {
+        if ($request->request->has('_target_path') && !empty($request->request->get('_target_path'))) {
             return new RedirectResponse($request->request->get('_target_path'));
         }
 

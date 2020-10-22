@@ -21,12 +21,14 @@ use ECorp\Infrastructure\Form\IdpClient\IdpClientModel;
 use ECorp\Infrastructure\Form\IdpClient\IdpClientType;
 use ECorp\Infrastructure\Form\User\UserFormModel;
 use ECorp\Infrastructure\Form\User\UserType;
+use ECorp\Infrastructure\Security\LoginFormAuthenticator;
 use ECorp\Infrastructure\Security\User\PurpleCloudsUser;
 use FOS\OAuthServerBundle\Model\ClientManagerInterface;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class IdpController extends AbstractController
@@ -60,14 +62,26 @@ class IdpController extends AbstractController
         return $this->render('idp/homepage.html.twig');
     }
 
-    public function login(AuthenticationUtils $authenticationUtils): Response
-    {
+    public function login(
+        Request $request,
+        AuthenticationUtils $authenticationUtils,
+        AuthorizationCheckerInterface $authorizationChecker
+    ): Response {
+
+        if ($authorizationChecker->isGranted('ROLE_USER')) {
+            return $this->redirectToRoute('idp_profile');
+        }
+
         $error = $authenticationUtils->getLastAuthenticationError();
         $lastUsername = $authenticationUtils->getLastUsername();
 
+        $targetPath = $this->getTargetPath($request);
+        $this->removeTargetPath($request);
+
         return $this->render('security/login.html.twig', [
             'last_username' => $lastUsername,
-            'error' => $error
+            'error' => $error,
+            'target_path' => $targetPath
         ]);
     }
 
@@ -177,5 +191,17 @@ class IdpController extends AbstractController
         }
 
         return $this->redirectToRoute('idp_profile_client');
+    }
+
+    private function getTargetPath(Request $request): ?string
+    {
+        return $request->getSession()->has(LoginFormAuthenticator::DESTINATION_KEY)
+            ? $request->getSession()->get(LoginFormAuthenticator::DESTINATION_KEY)
+            : null;
+    }
+
+    private function removeTargetPath(Request $request): void
+    {
+        $request->getSession()->remove(LoginFormAuthenticator::DESTINATION_KEY);
     }
 }

@@ -20,6 +20,7 @@
 
         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
         <a href="{{ path('web_register_user') }}">Don't have an account yet? Register here</a>
+        <input type="hidden" name="_target_path" value="{{ target_path }}"/>
         <p class="mt-5 mb-3 text-muted">&copy; PurpleClouds 2020</p>
         </div>
     </form>

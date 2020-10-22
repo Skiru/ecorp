@@ -14,12 +14,9 @@ security:
       anonymous: ~
       logout:
         path: web_logout_user
-
       form_login:
+        provider: users
         login_path: web_login_user
-        use_referer: true
-
-      provider: users
       guard:
         authenticators:
           - ECorp\Infrastructure\Security\LoginFormAuthenticator
@@ -40,3 +37,4 @@ security:
   access_control:
     - { path: ^/auth/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
     - { path: ^/profile, roles: IS_AUTHENTICATED_FULLY }
+    - { path: ^/oauth/v2/auth, roles: IS_AUTHENTICATED_FULLY }

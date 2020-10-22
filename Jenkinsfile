@@ -1,16 +1,6 @@
 #!/usr/bin/env groovy
 
 pipeline {
-//     environment {
-//         GITHUB_CREDENTIALS =
-//         registry = "mkoziol/purpleclouds"
-//         registryCredential = 'dockerhub'
-//         dockerPhpImage = ''
-//         dockerAssetsImage = ''
-//         containerName = 'ecorp-php'
-//         assetsContainerName = 'ecorp-assets'
-//     }
-
     environment {
         HOME = "${WORKSPACE}"
         REGISTRY = "mkoziol/purpleclouds"

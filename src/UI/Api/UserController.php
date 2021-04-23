@@ -23,21 +23,10 @@ use Symfony\Component\HttpFoundation\Request;
 
 class UserController extends AbstractController
 {
-    /**
-     * @var CommandBusInterface
-     */
-    private $commandBus;
+    private CommandBusInterface $commandBus;
 
-    /**
-     * @var UserQueryInterface
-     */
-    private $userQuery;
+    private UserQueryInterface $userQuery;
 
-    /**
-     * UserController constructor.
-     * @param CommandBusInterface $commandBus
-     * @param UserQueryInterface $userQuery
-     */
     public function __construct(CommandBusInterface $commandBus, UserQueryInterface $userQuery)
     {
         $this->commandBus = $commandBus;
@@ -45,8 +34,6 @@ class UserController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     * @return JsonResponse
      * @throws Exception
      */
     public function registerUser(Request $request): JsonResponse
@@ -76,8 +63,6 @@ class UserController extends AbstractController
     }
 
     /**
-     * @param string $uuid
-     * @return JsonResponse
      * @throws AssertException
      */
     public function deleteUser(string $uuid): JsonResponse
@@ -97,26 +82,16 @@ class UserController extends AbstractController
         }
     }
 
-    /**
-     * @return JsonResponse
-     */
     public function countUsers(): JsonResponse
     {
         return new JsonResponse(['users' => $this->userQuery->count()]);
     }
 
-    /**
-     * @return JsonResponse
-     */
     public function listUsers(): JsonResponse
     {
         return new JsonResponse($this->userQuery->getAll());
     }
 
-    /**
-     * @param string $uuid
-     * @return JsonResponse
-     */
     public function getUserByUuid(string $uuid): JsonResponse
     {
         if (null === $this->userQuery->getByUuid($uuid)) {

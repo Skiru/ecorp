@@ -93,7 +93,7 @@ pipeline {
                     export ECORP_ASSETS_IMAGE_BUILD_TAG=${FULL_ASSETS_IMAGE_NAME};\
                     export ECORP_PHP_IMAGE_BUILD_TAG=${FULL_PHP_IMAGE_NAME};\
                     docker-compose -f /var/www/PurpleClouds/ecorp/docker-compose.yml up -d;\
-                    docker exec -it ecorp_ecorp_purple_clouds_php_1 sh /var/www/html/setup;\
+                    docker exec ecorp_ecorp_purple_clouds_php_1 sh /var/www/html/setup;\
                     docker image prune -a -f || true;"\
                     | ssh -o StrictHostKeyChecking=no -l root 77.55.194.92;'
                 }

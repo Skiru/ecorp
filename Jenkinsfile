@@ -87,33 +87,16 @@ pipeline {
         stage('Build ecorp application') {
             steps{
                 sshagent (credentials: ['purple-clouds-server']) {
-                    script
-                    {
-                        sh """ssh -tt root@77.55.194.92 << EOF
-                        docker login; \
-                        export ECORP_ASSETS_IMAGE_BUILD_TAG=${FULL_ASSETS_IMAGE_NAME};\
-                        export ECORP_PHP_IMAGE_BUILD_TAG=${FULL_PHP_IMAGE_NAME};\
-                        docker-compose -f /var/www/PurpleClouds/ecorp/docker-compose.yml up -d;\
-                        docker image prune -a -f || true;"\
-                        exit;
-                        EOF"""
-                    }
-//                     sh 'echo \
-//                     "docker login --username mkoziol --password pamietamhaslo;\
-//                     export ECORP_ASSETS_IMAGE_BUILD_TAG=${FULL_ASSETS_IMAGE_NAME};\
-//                     export ECORP_PHP_IMAGE_BUILD_TAG=${FULL_PHP_IMAGE_NAME};\
-//                     docker-compose -f /var/www/PurpleClouds/ecorp/docker-compose.yml up -d;\
-//                     docker image prune -a -f || true;"\
-//                     | ssh -o StrictHostKeyChecking=no -l root 77.55.194.92;'
+
+                    sh 'echo \
+                    "docker login --username mkoziol --password pamietamhaslo;\
+                    export ECORP_ASSETS_IMAGE_BUILD_TAG=${FULL_ASSETS_IMAGE_NAME};\
+                    export ECORP_PHP_IMAGE_BUILD_TAG=${FULL_PHP_IMAGE_NAME};\
+                    docker-compose -f /var/www/PurpleClouds/ecorp/docker-compose.yml up -d;\
+                    docker exec -it ecorp_ecorp_purple_clouds_php_1 sh /var/www/html/setup;\
+                    docker image prune -a -f || true;"\
+                    | ssh -o StrictHostKeyChecking=no -l root 77.55.194.92;'
                 }
-//                 REPLACE
-//                 script
-//                 {
-//                     sh """ssh -tt login@host << EOF
-//                     your command
-//                     exit
-//                     EOF"""
-//                 }
             }
         }
     }

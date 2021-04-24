@@ -1,0 +1,4 @@
+#!/usr/bin/env php
+
+php bin/console c:c
+php bin/console doctrine:migrations:migrate -n

@@ -16,7 +16,9 @@ class IdpClientType extends AbstractType
     {
         $builder
             ->add('name', TextType::class)
-            ->add('redirectUri', TextType::class)
+            ->add('redirectUri', TextType::class, [
+                'label' => 'redirect uris (separate with comma)'
+            ])
             ->add('grantType', ChoiceType::class, [
                 'choices' => ['authorization_code' => 'authorization_code', 'token' => 'token']
             ]);

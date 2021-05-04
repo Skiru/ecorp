@@ -87,7 +87,6 @@ pipeline {
         stage('Build ecorp application') {
             steps{
                 sshagent (credentials: ['purple-clouds-server']) {
-
                     sh 'echo \
                     "docker login --username mkoziol --password pamietamhaslo;\
                     export ECORP_ASSETS_IMAGE_BUILD_TAG=${FULL_ASSETS_IMAGE_NAME};\

@@ -1,8 +1,16 @@
-FROM php:7.4-fpm
+FROM php:7.4-fpm-alpine
 
-RUN apt-get update && apt-get install -y libpq-dev git unzip zlib1g-dev libzip-dev libjpeg62-turbo-dev libmcrypt-dev libpng-dev libonig-dev
-RUN docker-php-ext-install pdo pdo_pgsql zip bcmath opcache
-RUN docker-php-ext-enable pdo pdo_pgsql zip bcmath opcache
+RUN set -ex
+RUN apk add --no-cache \
+    $PHPIZE_DEPS \
+    postgresql-dev && \
+    docker-php-ext-install bcmath && \
+    docker-php-ext-enable bcmath && \
+    docker-php-ext-install pdo pdo_pgsql && \
+    docker-php-ext-enable pdo pdo_pgsql && \
+    docker-php-ext-install opcache && \
+    docker-php-ext-enable opcache && \
+    rm -rf /tmp/pear
 
 RUN  mkdir -p /var/www/html/var/log/
 

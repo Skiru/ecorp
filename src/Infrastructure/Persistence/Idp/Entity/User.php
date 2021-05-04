@@ -68,36 +68,27 @@ class User implements UserInterface
     public function setId(int $id): User
     {
         $this->id = $id;
+
         return $this;
     }
 
     public function setRoles(array $roles): User
     {
         $this->roles = $roles;
+
         return $this;
     }
 
-    /**
-     * @return Uuid
-     */
     public function getUuid(): Uuid
     {
         return $this->uuid;
     }
 
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @param string $uuid
-     *
-     * @return User
-     */
     public function setUuid(string $uuid): User
     {
         $this->uuid = $uuid;
@@ -106,11 +97,11 @@ class User implements UserInterface
     }
 
     /**
-     * @return array
+     * @return string[]
      */
     public function getRoles(): array
     {
-        $this->roles;
+        return $this->roles;
     }
 
     /**

@@ -1,9 +1,9 @@
-version: '3'
+version: '3.8'
 services:
   ecorp_purple_clouds_php:
     build:
       context: ./
-      dockerfile: docker/php/Dockerfile
+      dockerfile: docker/php/Dockerfile-dev
     links:
       - ecorp_purple_clouds_postgres
     volumes:
@@ -24,14 +24,17 @@ services:
     networks: ["purple_clouds_network_internal"]
 
   ecorp_purple_clouds_postgres:
-    image: postgres
+    restart: always
+    image: postgres:13.2-alpine
     ports:
       - "5432:5432"
+    volumes:
+      - ./docker/pgdata:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: mrrobot
       POSTGRES_PASSWORD: root
       POSTGRES_DB: idp_purpleclouds
-    networks: ["purple_clouds_network_internal"]
+    networks: [ "purple_clouds_network_internal" ]
 
   ecorp_puruple_clouds_assets:
     image: nginx:latest

@@ -31,49 +31,35 @@ class Client extends BaseClient
     protected $id;
 
     /**
-     * @var string
      * @ORM\Column(type="string", name="scopes")
      */
-    private $scopes;
+    private string $scopes;
 
     /**
-     * @var string
      * @ORM\Column(type="string", name="name")
      */
-    private $name;
+    private string $name;
 
     public function __construct()
     {
         parent::__construct();
     }
 
-    /**
-     * @param UuidInterface $uuid
-     */
     public function setUuid(UuidInterface $uuid): void
     {
         $this->uuid = $uuid;
     }
 
-    /**
-     * @param string $scopes
-     */
     public function setScopes(string $scopes): void
     {
         $this->scopes = $scopes;
     }
 
-    /**
-     * @param string $name
-     */
     public function setName(string $name): void
     {
         $this->name = $name;
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;

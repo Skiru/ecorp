@@ -6,7 +6,7 @@ namespace ECorp\Infrastructure\Form\IdpClient;
 
 class IdpClientModel
 {
-    public $redirectUri;
-    public $grantType;
-    public $name;
+    public string $redirectUri = '';
+    public string $grantType = 'code';
+    public string $name = '';
 }

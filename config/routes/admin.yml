@@ -1,0 +1,4 @@
+admin:
+  path: /profile/admin
+  controller: ECorp\UI\Frontend\EcorpDashboardController::index
+  methods: [ 'GET' ]

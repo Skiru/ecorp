@@ -180,10 +180,11 @@ class IdpController extends AbstractController
             //TODO add here command construction
 
             $client = $this->clientManager->createClient();
-            $client->setRedirectUris([$idpClientModel->redirectUri]);
+
+            $client->setRedirectUris(
+                explode(',', $idpClientModel->redirectUri)
+            );
             $client->setAllowedGrantTypes([$idpClientModel->grantType]);
-            /** @var PurpleCloudsUser $user */
-            $user = $this->getUser();
             $client->setUuid(Uuid::uuid4());
             $client->setScopes('profile');
             $client->setName($idpClientModel->name);

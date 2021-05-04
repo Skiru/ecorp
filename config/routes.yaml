@@ -9,3 +9,6 @@ read:
 
 write:
     resource: 'routes/user_write_model.yml'
+
+admin_routes:
+    resource: 'routes/admin.yml'

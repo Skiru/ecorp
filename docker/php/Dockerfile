@@ -1,7 +1,7 @@
 FROM composer:2.0.13 as composer-prod
 WORKDIR /app
 COPY ./ ./
-RUN composer install --no-interaction --prefer-dist --optimize-autoloader --no-progress
+RUN composer install --no-interaction --prefer-dist --optimize-autoloader --no-progress --ignore-platform-reqs
 
 FROM php:7.4-fpm-alpine
 RUN set -ex

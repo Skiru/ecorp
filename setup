@@ -1,4 +1,6 @@
 #!/usr/bin/env php
 
+while ! nc -z ecorp_purple_clouds_postgres 5432; do sleep 1; done;
+
 php bin/console c:c
 php bin/console doctrine:migrations:migrate -n

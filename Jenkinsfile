@@ -22,6 +22,7 @@ pipeline {
                 sh '''
                 git reset --hard HEAD
                 git clean -fdx
+                docker image pruna -a -f
                 '''
             }
         }

@@ -18,7 +18,7 @@ RUN apk add --no-cache \
 
 ENV APP_ENV=prod \
     APP_SECRET=ca6777ca3b9d07d5a38d4f68036f232d \
-    DATABASE_URL="pgsql://mrrobot:root@ecorp_purple_clouds_postgres/idp_purpleclouds"
+    DATABASE_URL="pgsql://mrrobot:root@postgres/idp"
 
 RUN  mkdir -p /var/www/html/var/log/
 COPY ./docker/php/php.ini /etc/php7/conf.d/php.ini
